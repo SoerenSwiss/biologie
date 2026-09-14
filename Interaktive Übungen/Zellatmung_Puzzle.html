@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Die Zellatmung – Baustein-Puzzle</title>
+<style>
+  :root{
+    --blue:#AEE1F9; --teal:#2FBF9B; --yellow:#FFF6A8; --orange:#FF9A2E; --brown:#C8930A; --grey:#C6C6C6;
+    --ink:#1a1a1a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:"Segoe UI", Arial, sans-serif;
+    margin:0; padding:16px; background:#f4f6f7; color:var(--ink);
+  }
+  h1{ text-align:center; font-size:1.5rem; margin:0 0 4px;}
+  p.sub{ text-align:center; margin:0 0 14px; color:#555; font-size:0.95rem;}
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center;
+    margin-bottom:14px;
+  }
+  button{
+    font-size:0.95rem; padding:8px 16px; border-radius:8px; border:1px solid #999;
+    background:white; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.1);
+  }
+  button:hover{ background:#eee; }
+  button.primary{ background:#2FBF9B; color:white; border-color:#249c7f; }
+  button.primary:hover{ background:#26a583; }
+  #result{ font-weight:600; min-width:220px; text-align:center; }
+  .legend{
+    display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-bottom:14px; font-size:0.82rem;
+  }
+  .legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .legend i{ width:14px; height:14px; border-radius:3px; display:inline-block; border:1px solid #8887; }
+
+  #boardWrap{
+    width:100%; max-width:1200px; margin:0 auto;
+    position:relative; aspect-ratio: 1200 / 700;
+    background:white; border:2px solid #333; border-radius:10px; overflow:hidden;
+  }
+  svg#arrows{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+
+  .slot{
+    position:absolute; border:2.5px dashed #999; border-radius:6px;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-size:0.78rem; color:#aaa; padding:2px; background:rgba(0,0,0,0.015);
+  }
+  .slot.round{ border-radius:50%; }
+  .slot.correct{ border-color:#1e8e3e; box-shadow:0 0 0 3px rgba(30,142,62,0.15) inset; }
+  .slot.incorrect{ border-color:#d93025; box-shadow:0 0 0 3px rgba(217,48,37,0.15) inset; }
+  .slot.hint::after{ content: attr(data-hint); position:absolute; bottom:-1.3em; font-size:0.62rem; color:#c00; white-space:nowrap; }
+
+  .tile{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    text-align:center; border-radius:6px; border:1.5px solid #333;
+    font-weight:600; cursor:grab; touch-action:none; user-select:none;
+    padding:4px 8px; line-height:1.15; font-size:0.85rem;
+    box-shadow:0 2px 3px rgba(0,0,0,0.18);
+  }
+  .tile.dragging{ cursor:grabbing; box-shadow:0 6px 14px rgba(0,0,0,0.35); }
+  .tile.round{ border-radius:50%; }
+  .tile.title{ font-size:1.3rem; font-weight:800; border-width:2px; }
+  .tile.cat-blue{ background:var(--blue); }
+  .tile.cat-teal{ background:var(--teal); color:white; }
+  .tile.cat-yellow{ background:var(--yellow); }
+  .tile.cat-orange{ background:var(--orange); color:white; }
+  .tile.cat-brown{ background:var(--brown); color:white; }
+  .tile.cat-grey{ background:var(--grey); }
+  .tile.cat-white{ background:white; }
+
+  #tray{
+    max-width:1200px; margin:16px auto 0; min-height:110px;
+    background:#eef1f2; border:2px dashed #bbb; border-radius:10px;
+    display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:center;
+    padding:14px;
+  }
+  #tray:empty::before{
+    content:"Alle Bausteine platziert – klicke auf „Prüfen“."; color:#888; font-size:0.9rem;
+  }
+  .solutionCaption{
+    position:absolute; bottom:-1.4em; left:0; right:0; text-align:center;
+    font-size:0.62rem; color:#0a7a3d; font-weight:700; display:none;
+  }
+  .showSolution .solutionCaption{ display:block; }
+</style>
+</head>
+<body>
+
+<h1>Die Zellatmung – bringt die Bausteine in die richtige Ordnung!</h1>
+<p class="sub">Zieht jeden Baustein aus dem Kasten unten in das passende gestrichelte Feld, sodass Reihenfolge und Pfeile der Zellatmung korrekt ergeben.</p>
+
+<div class="legend">
+  <span><i style="background:var(--blue)"></i>Ausgangsstoffe</span>
+  <span><i style="background:var(--teal)"></i>Prozessschritte</span>
+  <span><i style="background:var(--yellow)"></i>Zwischenprodukte</span>
+  <span><i style="background:var(--orange)"></i>Energieträger</span>
+  <span><i style="background:var(--brown)"></i>Endprodukte</span>
+  <span><i style="background:var(--grey)"></i>Kennzeichnung</span>
+</div>
+
+<div class="toolbar">
+  <button class="primary" id="checkBtn">Prüfen</button>
+  <button id="resetBtn">Zurücksetzen</button>
+  <button id="solutionBtn">Lösung anzeigen</button>
+  <span id="result"></span>
+</div>
+
+<div id="boardWrap">
+  <svg id="arrows" viewBox="0 0 1200 700" preserveAspectRatio="none">
+    <defs>
+      <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#333"></path>
+      </marker>
+    </defs>
+    <g stroke="#333" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)"></g>
+  </svg>
+  <!-- slots and tray injected by JS -->
+</div>
+
+<div id="tray"></div>
+
+<script>
+const W=1200, H=700;
+function pct(v,total){ return (v/total*100)+'%'; }
+
+// ---- Data: id, label, shape(rect/round), category color class, x,y,w,h (in 1200x700 space), group (for matching)
+const items = [
+  {id:'title', label:'Die Zellatmung', shape:'rect', cat:'white', x:420,y:8, w:360,h:55, group:'title', big:true},
+  {id:'anaerob', label:'anaerob', shape:'rect', cat:'grey', x:420,y:78, w:150,h:45, group:'anaerob'},
+  {id:'aerob', label:'aerob', shape:'rect', cat:'grey', x:870,y:78, w:150,h:45, group:'aerob'},
+
+  {id:'glucose', label:'Glucose', shape:'rect', cat:'blue', x:20,y:80, w:150,h:55, group:'glucose'},
+  {id:'glykolyse', label:'Glykolyse', shape:'rect', cat:'teal', x:20,y:175, w:150,h:95, group:'glykolyse'},
+  {id:'atp1', label:'ATP', shape:'round', cat:'orange', x:250,y:128, w:80,h:80, group:'atp'},
+  {id:'wasserstoff1', label:'Wasserstoff', shape:'rect', cat:'yellow', x:250,y:230, w:150,h:50, group:'wasserstoff'},
+  {id:'brenztraubensaeure', label:'Brenz-traubensäure', shape:'rect', cat:'yellow', x:230,y:328, w:170,h:65, group:'brenztraubensaeure'},
+  {id:'acetylcoa', label:'Acetyl-CoA', shape:'rect', cat:'yellow', x:230,y:428, w:170,h:50, group:'acetylcoa'},
+
+  {id:'fettsaeuren', label:'Fettsäuren', shape:'rect', cat:'blue', x:20,y:615, w:150,h:55, group:'fettsaeuren'},
+  {id:'betaoxidation', label:'ß-Oxidation', shape:'rect', cat:'teal', x:20,y:480, w:150,h:95, group:'betaoxidation'},
+
+  {id:'zyklus', label:'Zitronensäure-zyklus', shape:'round', cat:'teal', x:450,y:320, w:220,h:220, group:'zyklus'},
+  {id:'gtp', label:'GTP', shape:'round', cat:'orange', x:515,y:188, w:90,h:90, group:'gtp'},
+  {id:'kohlenstoffdioxid', label:'Kohlenstoffdioxid', shape:'rect', cat:'brown', x:460,y:580, w:200,h:55, group:'kohlenstoffdioxid'},
+  {id:'wasserstoff2', label:'Wasserstoff', shape:'rect', cat:'yellow', x:710,y:395, w:150,h:50, group:'wasserstoff'},
+
+  {id:'atmungskette', label:'Atmungskette', shape:'rect', cat:'teal', x:910,y:330, w:170,h:100, group:'atmungskette'},
+  {id:'sauerstoff', label:'Sauerstoff', shape:'rect', cat:'blue', x:910,y:180, w:170,h:55, group:'sauerstoff'},
+  {id:'atp2', label:'ATP', shape:'round', cat:'orange', x:1110,y:345, w:80,h:80, group:'atp'},
+  {id:'wasser', label:'Wasser', shape:'rect', cat:'brown', x:910,y:475, w:170,h:55, group:'wasser'},
+];
+
+// ---- Arrows: [x1,y1,x2,y2] or polyline points
+const arrows = [
+  [[95,135],[95,175]],
+  [[170,205],[250,168]],
+  [[170,255],[250,255]],
+  [[95,270],[95,360],[230,360]],
+  [[315,393],[315,428]],
+  [[95,615],[95,575]],
+  [[95,480],[95,453],[230,453]],
+  [[400,453],[450,453]],
+  [[560,320],[560,278]],
+  [[560,540],[560,580]],
+  [[670,430],[710,420]],
+  [[860,420],[910,400]],
+  [[995,235],[995,330]],
+  [[1080,380],[1110,385]],
+  [[995,430],[995,475]],
+];
+
+const boardWrap = document.getElementById('boardWrap');
+const tray = document.getElementById('tray');
+const svgG = document.querySelector('#arrows g');
+
+// draw arrows
+arrows.forEach(pts=>{
+  const d = pts.map((p,i)=> (i===0?'M':'L')+p[0]+','+p[1]).join(' ');
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d', d);
+  svgG.appendChild(path);
+});
+
+// build slots
+items.forEach(it=>{
+  const slot = document.createElement('div');
+  slot.className = 'slot' + (it.shape==='round' ? ' round' : '');
+  slot.style.left = pct(it.x, W);
+  slot.style.top = pct(it.y, H);
+  slot.style.width = pct(it.w, W);
+  slot.style.height = pct(it.h, H);
+  slot.dataset.accept = it.group;
+  slot.dataset.slotId = it.id;
+  slot.id = 'slot-'+it.id;
+  const cap = document.createElement('div');
+  cap.className = 'solutionCaption';
+  cap.textContent = it.label.replace(/-\s*/g,'');
+  slot.appendChild(cap);
+  boardWrap.appendChild(slot);
+});
+
+// build tiles (shuffled) into tray
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function makeTile(it){
+  const t = document.createElement('div');
+  t.className = 'tile ' + (it.shape==='round'?'round ':'') + 'cat-'+it.cat + (it.big?' title':'');
+  t.textContent = it.label;
+  t.dataset.group = it.group;
+  t.dataset.itemId = it.id;
+  t.dataset.w = it.w; t.dataset.h = it.h;
+  // tray display size (scaled down a bit, capped)
+  const scale = 0.62;
+  t.style.width = Math.round(it.w*scale)+'px';
+  t.style.height = Math.round(it.h*scale)+'px';
+  attachDrag(t);
+  return t;
+}
+
+shuffle(items).forEach(it=> tray.appendChild(makeTile(it)));
+
+// ---- drag logic (pointer events, works mouse + touch) ----
+let dragState = null;
+
+function attachDrag(tile){
+  tile.addEventListener('pointerdown', (e)=>{
+    e.preventDefault();
+    const rect = tile.getBoundingClientRect();
+    dragState = {
+      tile, offsetX: e.clientX-rect.left, offsetY: e.clientY-rect.top,
+      startParent: tile.parentElement, startSlot: tile.parentElement.classList.contains('slot')?tile.parentElement:null
+    };
+    if(dragState.startSlot){
+      dragState.startSlot.dataset.filled = '';
+      dragState.startSlot.classList.remove('correct','incorrect');
+    }
+    document.body.appendChild(tile);
+    tile.style.position='fixed';
+    tile.style.left = rect.left+'px';
+    tile.style.top = rect.top+'px';
+    tile.style.width = rect.width+'px';
+    tile.style.height = rect.height+'px';
+    tile.style.zIndex = 1000;
+    tile.classList.add('dragging');
+    tile.setPointerCapture(e.pointerId);
+    tile.addEventListener('pointermove', onMove);
+    tile.addEventListener('pointerup', onUp);
+  });
+}
+
+function onMove(e){
+  if(!dragState) return;
+  const t = dragState.tile;
+  t.style.left = (e.clientX-dragState.offsetX)+'px';
+  t.style.top = (e.clientY-dragState.offsetY)+'px';
+}
+
+function onUp(e){
+  if(!dragState) return;
+  const t = dragState.tile;
+  t.classList.remove('dragging');
+  t.releasePointerCapture(e.pointerId);
+  t.removeEventListener('pointermove', onMove);
+  t.removeEventListener('pointerup', onUp);
+
+  t.style.pointerEvents='none';
+  const under = document.elementFromPoint(e.clientX, e.clientY);
+  t.style.pointerEvents='';
+  const slot = under ? under.closest('.slot') : null;
+
+  if(slot && (!slot.dataset.filled)){
+    slot.appendChild(t);
+    slot.dataset.filled = t.dataset.group;
+    t.style.position='relative';
+    t.style.left='0'; t.style.top='0';
+    t.style.width='100%'; t.style.height='100%';
+    t.style.zIndex='auto';
+  } else {
+    tray.appendChild(t);
+    t.style.position='relative';
+    t.style.left='0'; t.style.top='0';
+    t.style.width = Math.round(t.dataset.w*0.62)+'px';
+    t.style.height = Math.round(t.dataset.h*0.62)+'px';
+    t.style.zIndex='auto';
+  }
+  dragState = null;
+}
+
+// ---- Check / Reset / Solution ----
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+  let correct=0, total=items.length, filled=0;
+  document.querySelectorAll('.slot').forEach(slot=>{
+    slot.classList.remove('correct','incorrect');
+    if(slot.dataset.filled){
+      filled++;
+      if(slot.dataset.filled === slot.dataset.accept){ slot.classList.add('correct'); correct++; }
+      else { slot.classList.add('incorrect'); }
+    }
+  });
+  const result = document.getElementById('result');
+  if(filled < total){
+    result.textContent = `${correct} von ${total} richtig – noch ${total-filled} Bausteine offen.`;
+    result.style.color = '#a15c00';
+  } else if(correct === total){
+    result.textContent = `Alle ${total} Bausteine korrekt! 🎉`;
+    result.style.color = '#1e8e3e';
+  } else {
+    result.textContent = `${correct} von ${total} richtig platziert.`;
+    result.style.color = '#d93025';
+  }
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('.slot').forEach(slot=>{
+    slot.classList.remove('correct','incorrect');
+    slot.dataset.filled='';
+    const tile = slot.querySelector('.tile');
+    if(tile){
+      tray.appendChild(tile);
+      tile.style.position='relative';
+      tile.style.left='0'; tile.style.top='0';
+      tile.style.width = Math.round(tile.dataset.w*0.62)+'px';
+      tile.style.height = Math.round(tile.dataset.h*0.62)+'px';
+    }
+  });
+  // reshuffle tray order
+  const tiles = Array.from(tray.children);
+  shuffle(tiles).forEach(t=>tray.appendChild(t));
+  document.getElementById('result').textContent='';
+  boardWrap.classList.remove('showSolution');
+  document.getElementById('solutionBtn').textContent='Lösung anzeigen';
+});
+
+let solutionShown = false;
+document.getElementById('solutionBtn').addEventListener('click', ()=>{
+  solutionShown = !solutionShown;
+  boardWrap.classList.toggle('showSolution', solutionShown);
+  document.getElementById('solutionBtn').textContent = solutionShown ? 'Lösung verbergen' : 'Lösung anzeigen';
+});
+</script>
+</body>
+</html>
