@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genregulation bei Eukaryoten — Test Biologie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16241F;
+    --ink-soft:#3E4F46;
+    --paper:#F1F4EE;
+    --paper-raised:#FFFFFF;
+    --line:#D9DED5;
+    --correct:#2F7D4F;
+    --correct-bg:#E7F2EA;
+    --incorrect:#B4453A;
+    --incorrect-bg:#FBEAE7;
+
+    /* Blockfarben folgen dem inhaltlichen Weg: von den Grundlagen über
+       Promotor/Transkriptionsfaktoren, Enhancer/Silencer und Mediator
+       bis zu den Ebenen der Regulation und dem Myostatin-Beispiel */
+    --c-grundlagen:#3E4F46;
+    --c-promotor:#2E6F8E;
+    --c-spezifisch:#7A4FA3;
+    --c-mediator:#B8863A;
+    --c-ebenen:#2F7D6E;
+    --c-signal:#A3435B;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height:1.5;
+    padding-bottom:6rem;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .wrap{max-width:720px; margin:0 auto; padding:0 1.25rem;}
+
+  /* ---------- Kopf ---------- */
+  header.hero{
+    background:var(--ink);
+    color:var(--paper);
+    padding:2.75rem 0 2.25rem;
+    margin-bottom:2rem;
+  }
+  header.hero .wrap{display:flex; flex-direction:column; gap:1.5rem;}
+  .eyebrow-free-title{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(2rem, 6vw, 2.75rem);
+    line-height:1.05;
+    margin:0;
+  }
+  .subtitle{
+    margin:.5rem 0 0;
+    font-size:1.05rem;
+    color:#CBD6C9;
+    max-width:60ch;
+  }
+  .meta-fields{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:.75rem;
+    margin-top:.5rem;
+  }
+  .meta-fields label{
+    display:block;
+    font-size:.8rem;
+    color:#AEBDAB;
+    margin-bottom:.3rem;
+  }
+  .meta-fields input{
+    width:100%;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:3px;
+    color:var(--paper);
+    padding:.5rem .6rem;
+    font-family:inherit;
+    font-size:.95rem;
+  }
+  .meta-fields input::placeholder{color:#8CA089;}
+  .meta-fields input:focus{outline:2px solid #D9A441; outline-offset:1px;}
+  @media (max-width:560px){
+    .meta-fields{grid-template-columns:1fr;}
+  }
+
+  .hinweis{
+    font-size:.92rem;
+    color:var(--ink-soft);
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:4px solid var(--c-mediator);
+    padding:.85rem 1rem;
+    margin-bottom:2rem;
+  }
+  .hinweis strong{color:var(--ink);}
+
+  /* ---------- Fortschritt ---------- */
+  .progress-shell{
+    position:sticky;
+    top:0;
+    z-index:5;
+    background:var(--paper);
+    padding:.6rem 0 1rem;
+  }
+  .progress-track{
+    display:flex;
+    gap:3px;
+    height:8px;
+    border-radius:4px;
+    overflow:hidden;
+    background:var(--line);
+  }
+  .progress-seg{flex:1; background:var(--line); transition:background .2s ease;}
+  .progress-label{font-size:.78rem; color:var(--ink-soft); margin-top:.4rem;}
+
+  /* ---------- Themenblöcke ---------- */
+  section.block{margin-bottom:2.5rem;}
+  .block-head{
+    border-left:5px solid var(--block-color, var(--ink));
+    padding-left:.9rem;
+    margin-bottom:1.1rem;
+  }
+  .block-eyebrow{
+    font-size:.78rem;
+    color:var(--block-color, var(--ink-soft));
+    font-weight:600;
+    margin:0 0 .15rem;
+  }
+  .block-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.5rem;
+    margin:0;
+  }
+
+  .question{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:3px solid var(--block-color, var(--ink));
+    padding:1.1rem 1.2rem 1.2rem;
+    margin-bottom:1rem;
+  }
+  .question-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:.75rem;
+    margin-bottom:.55rem;
+  }
+  .qnum{font-size:.85rem; color:var(--ink-soft);}
+  .badges{display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end;}
+  .badge{
+    font-size:.72rem;
+    padding:.15rem .5rem;
+    border-radius:99px;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .badge.type{border-color:var(--block-color, var(--ink)); color:var(--block-color, var(--ink));}
+
+  .qtext{font-size:1.02rem; margin:0 0 .8rem; max-width:62ch;}
+
+  .options{display:flex; flex-direction:column; gap:.5rem;}
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:.6rem;
+    padding:.5rem .6rem;
+    border:1px solid transparent;
+    border-radius:3px;
+    cursor:pointer;
+  }
+  .option:hover{background:#F6F8F3;}
+  .option input{margin-top:.2rem; accent-color:var(--block-color, var(--ink)); flex-shrink:0;}
+  .option span{font-size:.96rem;}
+  .option.disabled{cursor:default;}
+  .option.disabled:hover{background:transparent;}
+
+  /* Auswertungszustand einer Frage */
+  .question.graded .option{opacity:.85;}
+  .question.graded .option.was-correct{background:var(--correct-bg); border-color:var(--correct); opacity:1;}
+  .question.graded .option.was-missed{background:var(--correct-bg); border-color:var(--correct); opacity:1; outline:2px dashed var(--correct);}
+  .question.graded .option.was-wrong{background:var(--incorrect-bg); border-color:var(--incorrect); opacity:1;}
+
+  /* ---------- Zuordnungsaufgaben (grafikbasiert) ---------- */
+  .match-diagram{
+    margin:0 0 1rem;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:.85rem .85rem .5rem;
+  }
+  .match-diagram svg{display:block; width:100%; height:auto;}
+  .diagram-caption{
+    margin:.5rem 0 0;
+    font-size:.8rem;
+    font-style:italic;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  .match-rows{display:flex; flex-direction:column; gap:.55rem;}
+  .match-row{
+    display:flex;
+    align-items:center;
+    gap:.7rem;
+    padding:.45rem .6rem;
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:var(--paper-raised);
+  }
+  .match-row .letter-badge{
+    flex-shrink:0;
+    width:1.9rem;
+    height:1.9rem;
+    border-radius:50%;
+    background:var(--block-color, var(--ink));
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:.85rem;
+  }
+  .match-row select{
+    flex:1;
+    font-family:inherit;
+    font-size:.93rem;
+    padding:.45rem .55rem;
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:#fff;
+    color:var(--ink);
+  }
+  .match-row select:disabled{background:#F6F8F3; color:var(--ink); opacity:1;}
+  .match-row .row-flag{font-size:1rem; flex-shrink:0; width:1.3rem; text-align:center;}
+  .question.graded .match-row.was-correct{background:var(--correct-bg); border-color:var(--correct);}
+  .question.graded .match-row.was-wrong{background:var(--incorrect-bg); border-color:var(--incorrect);}
+  .match-row .correct-note{display:none; font-size:.82rem; color:var(--ink-soft); margin-top:.15rem;}
+
+  .explanation{
+    margin-top:.8rem;
+    padding-top:.7rem;
+    border-top:1px dashed var(--line);
+    font-size:.92rem;
+    color:var(--ink-soft);
+    display:none;
+  }
+  .question.graded .explanation{display:block;}
+  .result-flag{
+    display:none;
+    align-items:center;
+    gap:.4rem;
+    font-size:.85rem;
+    font-weight:600;
+    margin-top:.7rem;
+  }
+  .question.graded .result-flag{display:flex;}
+  .result-flag.ok{color:var(--correct);}
+  .result-flag.no{color:var(--incorrect);}
+
+  /* ---------- Auswerten-Leiste ---------- */
+  .submit-bar{
+    text-align:center;
+    padding:1.5rem 0 2.5rem;
+  }
+  button{
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    border:none;
+    border-radius:3px;
+  }
+  .btn-primary{
+    background:var(--ink);
+    color:var(--paper);
+    padding:.9rem 2.2rem;
+  }
+  .btn-primary:hover{background:#233A31;}
+  .btn-primary:disabled{background:#9AA79A; cursor:not-allowed;}
+  .btn-secondary{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--ink);
+    padding:.6rem 1.3rem;
+    font-size:.9rem;
+  }
+  .btn-secondary:hover{background:var(--paper-raised);}
+  .missing-hint{font-size:.85rem; color:var(--incorrect); margin-top:.6rem; display:none;}
+
+  /* ---------- Ergebnis ---------- */
+  #results{display:none;}
+  .score-panel{
+    background:var(--ink);
+    color:var(--paper);
+    padding:2rem 1.5rem;
+    margin-bottom:2rem;
+  }
+  .score-panel .wrap{padding:0;}
+  .score-big{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(2.6rem, 10vw, 3.6rem);
+    line-height:1;
+    margin:0;
+  }
+  .score-sub{color:#CBD6C9; margin:.4rem 0 1.4rem;}
+  .breakdown{display:flex; flex-direction:column; gap:.7rem;}
+  .breakdown-row{display:grid; grid-template-columns:11rem 1fr 3.2rem; align-items:center; gap:.7rem; font-size:.88rem;}
+  .breakdown-bar-track{height:8px; background:rgba(255,255,255,.15); border-radius:4px; overflow:hidden;}
+  .breakdown-bar-fill{height:100%; border-radius:4px;}
+  .breakdown-count{text-align:right; color:#CBD6C9;}
+
+  .result-actions{display:flex; gap:.75rem; flex-wrap:wrap; margin:1.2rem 0 0;}
+  .copy-feedback{font-size:.85rem; color:var(--correct); margin-left:.3rem; display:none;}
+
+  footer{
+    max-width:720px;
+    margin:2.5rem auto 0;
+    padding:0 1.25rem;
+    font-size:.82rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:1.2rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="subtitle" style="margin-bottom:.3rem; color:#9FB49B; font-size:.9rem;">Biologie · Q2 (Genetik II) · Leistungskurs</p>
+      <h1 class="eyebrow-free-title">Genregulation bei Eukaryoten</h1>
+      <p class="subtitle">26 Fragen zu Transkriptionsfaktoren, Promotor, Enhancer &amp; Silencer, dem Mediator-Komplex, den Ebenen der Genregulation und extrazellulären Signalen am Beispiel Myostatin — inklusive zwei grafikbasierter Zuordnungsaufgaben.</p>
+    </div>
+    <div class="meta-fields">
+      <div>
+        <label for="f-name">Name</label>
+        <input type="text" id="f-name" placeholder="Vorname Nachname">
+      </div>
+      <div>
+        <label for="f-klasse">Klasse</label>
+        <input type="text" id="f-klasse" placeholder="z. B. 12 Bio-LK">
+      </div>
+      <div>
+        <label for="f-datum">Datum</label>
+        <input type="date" id="f-datum">
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="hinweis">
+    <strong>Hinweis zu den Fragen:</strong> Fragen sind entweder als <em>Einfachauswahl</em> (genau eine Antwort richtig), <em>Mehrfachauswahl</em> (mehrere Antworten richtig) oder <em>Zuordnung</em> markiert. Bei Mehrfachauswahl und Zuordnung gibt es den Punkt nur, wenn alle Zuordnungen bzw. alle richtigen und keine falschen Antworten angekreuzt sind. Bei den Zuordnungsaufgaben wählst du für jeden Buchstaben bzw. jede Ziffer in der Abbildung den passenden Begriff aus dem Dropdown-Menü aus.
+  </p>
+
+  <div class="progress-shell">
+    <div class="progress-track" id="progress-track"></div>
+    <p class="progress-label" id="progress-label">0 von 26 Fragen beantwortet</p>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="submit-bar">
+    <button class="btn-primary" id="btn-submit">Test auswerten</button>
+    <p class="missing-hint" id="missing-hint">Es sind noch nicht alle Fragen beantwortet — die Auswertung zählt unbeantwortete Fragen als falsch.</p>
+  </div>
+
+  <section id="results">
+    <div class="score-panel">
+      <div class="wrap">
+        <p class="score-big" id="score-big">0 / 26</p>
+        <p class="score-sub" id="score-sub">0 % richtig</p>
+        <div class="breakdown" id="breakdown"></div>
+        <div class="result-actions">
+          <button class="btn-secondary" id="btn-copy">Ergebnis als Text kopieren</button>
+          <button class="btn-secondary" id="btn-restart">Test zurücksetzen</button>
+          <span class="copy-feedback" id="copy-feedback">In die Zwischenablage kopiert.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>Selbstauswertung findet ausschließlich lokal im Browser statt — es werden keine Antworten irgendwohin übertragen. Zum Weitergeben des Ergebnisses an die Lehrkraft: „Ergebnis als Text kopieren" nutzen.</p>
+</footer>
+
+<script>
+/* ============================================================
+   Datenmodell: sechs Themenblöcke in inhaltlicher Reihenfolge.
+   Jede Frage: type 'single', 'multi' oder 'match'.
+   - single/multi: options mit correct-Flag (c)
+   - match: grafikbasierte Zuordnungsaufgabe. rows = [{label, answer}],
+     choices = Liste aller wählbaren Begriffe (für jedes <select>
+     gleich, Reihenfolge bewusst nicht identisch zur rows-Reihenfolge)
+   ============================================================ */
+const BLOCKS = [
+  {
+    id: "grundlagen",
+    title: "Genregulation bei Vielzellern — Grundlagen",
+    color: "var(--c-grundlagen)",
+    questions: [
+      {
+        type: "single",
+        text: "Warum ist die Regulation der Genexpression bei vielzelligen Eukaryoten insgesamt komplexer und vielfältiger als bei Prokaryoten?",
+        options: [
+          { t: "Weil vielzellige Organismen aus vielen Zellen bestehen, die zu Geweben mit unterschiedlichen Genexpressionsmustern organisiert sind.", c: true },
+          { t: "Weil Eukaryoten grundsätzlich weniger Gene besitzen als Prokaryoten.", c: false },
+          { t: "Weil bei Eukaryoten keine Transkriptionsfaktoren benötigt werden.", c: false },
+          { t: "Weil die DNA bei Eukaryoten nur einzelsträngig vorliegt.", c: false }
+        ],
+        exp: "Vielzellige Organismen bestehen aus vielen Zellen, die Gewebe bilden und als Organe zusammenwirken. Zellen unterschiedlicher Gewebe zeigen dabei jeweils eigene Muster der Genexpression — das erfordert eine deutlich komplexere Regulation als bei einzelligen Prokaryoten."
+      },
+      {
+        type: "multi",
+        text: "Welche Aussagen zur Genexpression in den verschiedenen Zellen eines vielzelligen Organismus sind korrekt?",
+        options: [
+          { t: "Zellen unterschiedlicher Gewebe zeigen unterschiedliche Muster der Genexpression.", c: true },
+          { t: "Gene können vollständig ausgeschaltet werden.", c: true },
+          { t: "Die Expression eines Gens ist entweder vollständig „an” oder vollständig „aus” — Zwischenstufen gibt es nicht.", c: false },
+          { t: "Die Expression eines Gens kann auch nur leicht vermindert oder stark erhöht werden.", c: true }
+        ],
+        exp: "Gene können komplett ausgeschaltet werden, ihre Expression kann aber auch nur leicht vermindert oder stark erhöht werden — die Regulation ist fein abstufbar, kein reiner Ein-Aus-Schalter."
+      },
+      {
+        type: "single",
+        text: "Muskelzellen und andere Körperzellen eines Säugetiers besitzen nahezu dieselbe DNA. Was erklärt trotzdem ihre unterschiedliche Struktur und Funktion?",
+        options: [
+          { t: "Unterschiedliche Muster der Genexpression je Zell- bzw. Gewebetyp.", c: true },
+          { t: "Unterschiedliche DNA-Sequenzen in jeder einzelnen Zelle.", c: false },
+          { t: "Das vollständige Fehlen von Introns in Muskelzellen.", c: false },
+          { t: "Eine höhere Chromosomenzahl in Muskelzellen.", c: false }
+        ],
+        exp: "Nicht die DNA-Sequenz unterscheidet sich zwischen den Zelltypen, sondern welche Gene in welchem Ausmaß abgelesen werden. Genau diese unterschiedliche Genexpression macht z. B. eine Muskelzelle zu einer Muskelzelle."
+      }
+    ]
+  },
+  {
+    id: "promotor",
+    title: "Allgemeine Transkriptionsfaktoren & Promotor",
+    color: "var(--c-promotor)",
+    questions: [
+      {
+        type: "single",
+        text: "Wo liegt der Promotorbereich eines Gens bei Eukaryoten?",
+        options: [
+          { t: "In der Nähe des Startpunkts der Transkription.", c: true },
+          { t: "Ausschließlich am Ende des Gens, hinter dem Stoppcodon.", c: false },
+          { t: "Immer mehrere tausend Basenpaare vom Gen entfernt.", c: false },
+          { t: "Innerhalb des codierenden Bereichs des Gens.", c: false }
+        ],
+        exp: "Auch bei Eukaryoten liegt der Promotorbereich in der Nähe des Startpunkts der Transkription. Er umfasst DNA-Sequenzen, die als Bindestellen für verschiedene Proteine dienen."
+      },
+      {
+        type: "single",
+        text: "Welche Funktion haben allgemeine Transkriptionsfaktoren?",
+        options: [
+          { t: "Sie ermöglichen durch Bindung im Promotorbereich die Wechselwirkung zwischen DNA und RNA-Polymerase und sind für den Transkriptionsbeginn notwendig.", c: true },
+          { t: "Sie binden ausschließlich an weit entfernte Enhancer-Sequenzen.", c: false },
+          { t: "Sie katalysieren den Abbau von mRNA im Cytoplasma.", c: false },
+          { t: "Sie verhindern grundsätzlich die Bindung der RNA-Polymerase an die DNA.", c: false }
+        ],
+        exp: "Proteine, die im Promotorbereich die Wechselwirkung zwischen DNA und RNA-Polymerase ermöglichen, werden als allgemeine Transkriptionsfaktoren bezeichnet. Sie sind unbedingt notwendig für den Beginn der Transkription."
+      },
+      {
+        type: "multi",
+        text: "Welche Aussagen zu allgemeinen Transkriptionsfaktoren treffen zu?",
+        options: [
+          { t: "Ihre genaue Zusammensetzung ist vom jeweiligen Promotor abhängig.", c: true },
+          { t: "Manche sind für den Transkriptionsstart zwingend erforderlich, andere sind variabel.", c: true },
+          { t: "Variable allgemeine Transkriptionsfaktoren können als starke Aktivatoren wirken und die Transkriptionsrate erhöhen.", c: true },
+          { t: "Allgemeine Transkriptionsfaktoren können sich untereinander nicht gegenseitig beeinflussen.", c: false }
+        ],
+        exp: "Abhängig vom Promotor ist die Kombination der allgemeinen Transkriptionsfaktoren variabel: manche sind zwingend erforderlich, andere variabel und können z. B. als starke Aktivatoren wirken. Die allgemeinen Transkriptionsfaktoren können sich zudem gegenseitig durch Wechselwirkungen beeinflussen."
+      },
+      {
+        type: "single",
+        text: "Was ist die notwendige Voraussetzung dafür, dass die RNA-Polymerase am Promotor binden kann?",
+        options: [
+          { t: "Die vorherige Bindung mehrerer allgemeiner Transkriptionsfaktoren an die DNA-Sequenzen des Promotors.", c: true },
+          { t: "Der vollständige Abbau der umgebenden Histone.", c: false },
+          { t: "Eine Methylierung der RNA-Polymerase selbst.", c: false },
+          { t: "Eine Mutation im Promotorbereich.", c: false }
+        ],
+        exp: "Erst durch die Bindung mehrerer Proteine — der allgemeinen Transkriptionsfaktoren — an die DNA-Sequenzen des Promotors wird die Anlagerung der RNA-Polymerase ermöglicht."
+      }
+    ]
+  },
+  {
+    id: "spezifisch",
+    title: "Spezifische Transkriptionsfaktoren: Enhancer & Silencer",
+    color: "var(--c-spezifisch)",
+    questions: [
+      {
+        type: "single",
+        text: "Wodurch unterscheiden sich spezifische von allgemeinen Transkriptionsfaktoren vor allem?",
+        options: [
+          { t: "Spezifische Transkriptionsfaktoren binden an entfernt liegende, für einzelne Gene charakteristische DNA-Sequenzen und beeinflussen so gezielt die Transkriptionsrate dieses einen Zielgens.", c: true },
+          { t: "Spezifische Transkriptionsfaktoren sind für den Transkriptionsstart aller Gene zwingend notwendig.", c: false },
+          { t: "Spezifische Transkriptionsfaktoren binden direkt an die RNA-Polymerase, ganz ohne Beteiligung von DNA.", c: false },
+          { t: "Spezifische Transkriptionsfaktoren kommen ausschließlich bei Prokaryoten vor.", c: false }
+        ],
+        exp: "Proteine, die an entfernte, spezifische DNA-Sequenzen binden und dadurch die Transkriptionsrate des jeweiligen Zielgens beeinflussen, werden spezifische Transkriptionsfaktoren genannt — im Unterschied zu den allgemeinen Transkriptionsfaktoren, die am Promotor nahezu jedes Gens benötigt werden."
+      },
+      {
+        type: "single",
+        text: "Wie werden entfernt liegende DNA-Sequenzen bezeichnet, an die aktivierende spezifische Transkriptionsfaktoren binden?",
+        options: [
+          { t: "Silencer", c: false },
+          { t: "Enhancer", c: true },
+          { t: "Mediator", c: false },
+          { t: "Operator", c: false }
+        ],
+        exp: "Entfernt liegende, aktivierende DNA-Sequenzen werden als Enhancer bezeichnet."
+      },
+      {
+        type: "single",
+        text: "Wie werden entfernt liegende DNA-Sequenzen bezeichnet, an die hemmende spezifische Transkriptionsfaktoren binden?",
+        options: [
+          { t: "Enhancer", c: false },
+          { t: "Promotor", c: false },
+          { t: "Silencer", c: true },
+          { t: "Terminator", c: false }
+        ],
+        exp: "Entfernt liegende, hemmende DNA-Sequenzen werden als Silencer bezeichnet. Hier ermöglicht die Wechselwirkung mit dem Proteinkomplex des Promotorbereichs eine Verminderung der Transkriptionsrate."
+      },
+      {
+        type: "multi",
+        text: "Welche Aussagen zur Wirkung von Enhancern sind korrekt?",
+        options: [
+          { t: "Durch Schleifenbildung der DNA gelangt der an den Enhancer gebundene Transkriptionsfaktor in räumliche Nähe des Promotorbereichs.", c: true },
+          { t: "Enhancer erhöhen spezifisch die Transkriptionsrate des zugehörigen Zielgens.", c: true },
+          { t: "Enhancer liegen immer unmittelbar neben dem Promotor des Zielgens.", c: false },
+          { t: "Enhancer wirken über die lineare Entfernung der DNA-Sequenz, unabhängig von räumlicher Nähe zum Promotor.", c: false }
+        ],
+        exp: "Enhancer können im Genom weit vom Zielgen entfernt liegen. Erst durch Schlaufenbildung der DNA gelangt der gebundene Transkriptionsfaktor in räumliche Nähe des Promotorbereichs und erhöht dort spezifisch die Transkriptionsrate."
+      },
+      {
+        type: "match",
+        text: "Ordne den Buchstaben A–F in der Abbildung die passenden Fachbegriffe zu.",
+        svg: `<svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vereinfachtes Schema des Transkriptionsstarts bei Eukaryoten">
+          <rect x="20" y="196" width="600" height="14" rx="4" fill="#C9D6CE" stroke="#9FB49B" stroke-width="1"/>
+          <rect x="45" y="193" width="80" height="20" rx="3" fill="#5C8A52"/>
+          <rect x="170" y="193" width="80" height="20" rx="3" fill="#B4453A"/>
+          <rect x="345" y="193" width="95" height="20" rx="3" fill="#C97A1A"/>
+          <rect x="450" y="193" width="150" height="20" rx="3" fill="#2E6F8E"/>
+          <path d="M 85 193 C 85 110, 300 90, 392 150" fill="none" stroke="#5C8A52" stroke-width="2" stroke-dasharray="5 4"/>
+          <path d="M 210 193 C 210 150, 300 140, 392 150" fill="none" stroke="#B4453A" stroke-width="2" stroke-dasharray="5 4"/>
+          <ellipse cx="392" cy="120" rx="48" ry="30" fill="#7A4FA3"/>
+          <circle cx="460" cy="160" r="24" fill="#1B7F79"/>
+          <line x1="415" y1="140" x2="448" y2="152" stroke="#5B6478" stroke-width="2"/>
+          <line x1="460" y1="184" x2="460" y2="193" stroke="#5B6478" stroke-width="2"/>
+          <polygon points="470,193 470,175 500,184" fill="#16241F"/>
+          <g font-family="'Public Sans', sans-serif" font-weight="700" font-size="14">
+            <circle cx="85" cy="165" r="13" fill="#fff" stroke="#5C8A52" stroke-width="2"/>
+            <text x="85" y="170" text-anchor="middle" fill="#16241F">A</text>
+            <circle cx="210" cy="165" r="13" fill="#fff" stroke="#B4453A" stroke-width="2"/>
+            <text x="210" y="170" text-anchor="middle" fill="#16241F">B</text>
+            <circle cx="392" cy="120" r="13" fill="#fff" stroke="#7A4FA3" stroke-width="2"/>
+            <text x="392" y="125" text-anchor="middle" fill="#16241F">D</text>
+            <circle cx="392" cy="222" r="13" fill="#fff" stroke="#C97A1A" stroke-width="2"/>
+            <text x="392" y="227" text-anchor="middle" fill="#16241F">C</text>
+            <circle cx="460" cy="160" r="13" fill="#fff" stroke="#1B7F79" stroke-width="2"/>
+            <text x="460" y="165" text-anchor="middle" fill="#16241F">E</text>
+            <circle cx="560" cy="222" r="13" fill="#fff" stroke="#2E6F8E" stroke-width="2"/>
+            <text x="560" y="227" text-anchor="middle" fill="#16241F">F</text>
+          </g>
+        </svg>`,
+        caption: "Vereinfachtes Schema: regulatorische DNA-Bereiche und Transkriptionskomplex bei Eukaryoten (nach dem in Frage stehenden Lehrbuchbild).",
+        rows: [
+          { label: "A", answer: "Enhancer" },
+          { label: "B", answer: "Silencer" },
+          { label: "C", answer: "Promotor (mit allgemeinen Transkriptionsfaktoren)" },
+          { label: "D", answer: "Mediator" },
+          { label: "E", answer: "RNA-Polymerase" },
+          { label: "F", answer: "Gen (codierender Bereich)" }
+        ],
+        choices: [
+          "Promotor (mit allgemeinen Transkriptionsfaktoren)",
+          "Silencer",
+          "RNA-Polymerase",
+          "Enhancer",
+          "Gen (codierender Bereich)",
+          "Mediator"
+        ],
+        exp: "A = Enhancer (aktivierend, per DNA-Schleife an den Promotorbereich herangeführt); B = Silencer (hemmend); C = Promotor mit den allgemeinen Transkriptionsfaktoren; D = Mediator (vermittelt zwischen allen Transkriptionsfaktoren und der RNA-Polymerase); E = RNA-Polymerase; F = das eigentliche Gen, dessen Transkription reguliert wird."
+      }
+    ]
+  },
+  {
+    id: "mediator",
+    title: "Der Mediator-Komplex",
+    color: "var(--c-mediator)",
+    questions: [
+      {
+        type: "single",
+        text: "Welche Funktion hat der Mediator-Komplex bei der eukaryotischen Genregulation?",
+        options: [
+          { t: "Er vermittelt die Wechselwirkungen aller — allgemeinen wie spezifischen — Transkriptionsfaktoren mit der RNA-Polymerase.", c: true },
+          { t: "Er schneidet die prä-mRNA in ihre reife Form (Spleißen).", c: false },
+          { t: "Er transportiert reife mRNA aus dem Zellkern ins Cytoplasma.", c: false },
+          { t: "Er baut fehlerhaft gefaltete Proteine ab.", c: false }
+        ],
+        exp: "Über den Proteinkomplex Mediator werden die Wechselwirkungen aller Transkriptionsfaktoren mit der RNA-Polymerase vermittelt. So sind Wechselwirkungen zwischen unterschiedlichen Gruppen DNA-bindender Proteine möglich."
+      },
+      {
+        type: "single",
+        text: "Warum ermöglicht das Zusammenspiel von Mediator und spezifischen Transkriptionsfaktoren bei Eukaryoten eine feinere Abstufung der Transkriptionsrate als der einfache „Ein-Aus-Schalter” mancher Prokaryoten?",
+        options: [
+          { t: "Weil über den Mediator viele verschiedene Kombinationen aktivierender und hemmender Transkriptionsfaktoren gleichzeitig auf die RNA-Polymerase einwirken können.", c: true },
+          { t: "Weil der Mediator die DNA-Sequenz des Promotors dauerhaft verändert.", c: false },
+          { t: "Weil der Mediator nur bei genau jedem zehnten Gen im Genom vorkommt.", c: false },
+          { t: "Weil der Mediator identisch mit der RNA-Polymerase ist.", c: false }
+        ],
+        exp: "Prokaryoten regulieren oft über einen einzelnen molekularen Schalter. Bei Eukaryoten hingegen erlaubt die Vielzahl an spezifischen Transkriptionsfaktoren, die über den Mediator gebündelt auf die RNA-Polymerase wirken, eine sehr feine Abstufung zwischen schwacher und sehr starker Promotoraktivität."
+      }
+    ]
+  },
+  {
+    id: "ebenen",
+    title: "Ebenen der Genregulation",
+    color: "var(--c-ebenen)",
+    questions: [
+      {
+        type: "single",
+        text: "Auf welcher Ebene der Genregulation setzt die für die Zelle bedeutendste Kontrolle an?",
+        options: [
+          { t: "Bei der Kontrolle der Proteinstabilität.", c: false },
+          { t: "Bei der Kontrolle der Initiation der Transkription.", c: true },
+          { t: "Bei der Kontrolle der Translation.", c: false },
+          { t: "Bei der Kontrolle des mRNA-Transports.", c: false }
+        ],
+        exp: "Besonders bedeutend ist die Kontrolle der Initiation der Transkription: Hier sind alle Varianten möglich, vom vollständigen Abschalten eines Gens bis zu einer sehr hohen Transkriptionsrate."
+      },
+      {
+        type: "multi",
+        text: "Welche Prozesse gehören zur Kontrolle der RNA-Prozessierung auf dem Weg von der prä-mRNA zur reifen mRNA?",
+        options: [
+          { t: "Spleißen", c: true },
+          { t: "Capping", c: true },
+          { t: "Poly-Adenylierung", c: true },
+          { t: "Proteinfaltung", c: false }
+        ],
+        exp: "Bei der RNA-Prozessierung wird die Effizienz der Umwandlung von prä-mRNA zu reifer mRNA durch Spleißen, Capping und Poly-Adenylierung kontrolliert. Proteinfaltung betrifft dagegen eine spätere, eigene Ebene der Regulation."
+      },
+      {
+        type: "single",
+        text: "Welche Auswirkung haben Capping und Poly-Adenylierung der mRNA laut Text?",
+        options: [
+          { t: "Sie beeinflussen den Transport durch die Kernporen und die Stabilität der mRNA im Cytoplasma.", c: true },
+          { t: "Sie verhindern die Übersetzung der mRNA vollständig.", c: false },
+          { t: "Sie führen unmittelbar zum Abbau der mRNA.", c: false },
+          { t: "Sie sind ausschließlich für den Abbau von Proteinen zuständig.", c: false }
+        ],
+        exp: "Capping und Poly-Adenylierung wirken sich auf den Transport der mRNA durch die Kernporen sowie auf ihre Stabilität im Cytoplasma aus — beides beeinflusst, wie oft die mRNA translatiert werden kann."
+      },
+      {
+        type: "single",
+        text: "Was versteht man unter der „Kontrolle der mRNA-Stabilität”?",
+        options: [
+          { t: "Wie schnell die reife mRNA im Cytoplasma wieder abgebaut wird und damit, wie oft sie noch translatiert werden kann.", c: true },
+          { t: "Wie viele Introns eine mRNA ursprünglich enthalten hat.", c: false },
+          { t: "Ob eine mRNA überhaupt aus dem Zellkern exportiert werden darf.", c: false },
+          { t: "Wie viele Ribosomen gleichzeitig an ein Gen binden können.", c: false }
+        ],
+        exp: "Wird mRNA sehr schnell wieder abgebaut, kann sie nur in geringerem Maße translatiert werden. Die Kontrolle der mRNA-Stabilität bestimmt also, wie lange und wie oft eine mRNA im Cytoplasma noch als Vorlage für die Translation zur Verfügung steht."
+      },
+      {
+        type: "single",
+        text: "Was passiert auf der Ebene „Kontrolle der Proteinfaltung und -modifikation”?",
+        options: [
+          { t: "Die bei der Translation entstandene Aminosäurekette wird mithilfe von Hilfsfaktoren in ihre funktionale räumliche Struktur gebracht und ggf. durch Anhängen von Seitengruppen modifiziert.", c: true },
+          { t: "Die prä-mRNA wird gespleißt.", c: false },
+          { t: "Die DNA wird im Promotorbereich methyliert.", c: false },
+          { t: "Der Mediator-Komplex wird abgebaut.", c: false }
+        ],
+        exp: "Eine Aminosäurekette wird erst durch das Einnehmen einer bestimmten räumlichen Struktur — häufig unterstützt durch Hilfsfaktoren — sowie durch Modifikation von Seitengruppen zu einem funktionalen Protein."
+      },
+      {
+        type: "match",
+        text: "Der Abbildung liegen die sieben Ebenen der Genregulation zugrunde, von der DNA bis zum aktiven Protein. Ordne den Ziffern 1–7 die jeweils passende Beschreibung zu.",
+        svg: `<svg viewBox="0 0 260 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sieben Ebenen der Genregulation von DNA bis aktivem Protein">
+          <text x="130" y="20" text-anchor="middle" font-family="'Public Sans', sans-serif" font-size="13" fill="#3E4F46">DNA</text>
+          <line x1="130" y1="30" x2="130" y2="520" stroke="#D9DED5" stroke-width="4"/>
+          <g font-family="'Public Sans', sans-serif" font-weight="700" font-size="15">
+            <circle cx="130" cy="60" r="22" fill="#2F7D6E"/><text x="130" y="66" text-anchor="middle" fill="#fff">1</text>
+            <circle cx="130" cy="140" r="22" fill="#2F7D6E"/><text x="130" y="146" text-anchor="middle" fill="#fff">2</text>
+            <circle cx="130" cy="220" r="22" fill="#2F7D6E"/><text x="130" y="226" text-anchor="middle" fill="#fff">3</text>
+            <circle cx="130" cy="300" r="22" fill="#2F7D6E"/><text x="130" y="306" text-anchor="middle" fill="#fff">4</text>
+            <circle cx="130" cy="380" r="22" fill="#2F7D6E"/><text x="130" y="386" text-anchor="middle" fill="#fff">5</text>
+            <circle cx="130" cy="460" r="22" fill="#2F7D6E"/><text x="130" y="466" text-anchor="middle" fill="#fff">6</text>
+            <circle cx="130" cy="520" r="22" fill="#2F7D6E"/><text x="130" y="526" text-anchor="middle" fill="#fff">7</text>
+          </g>
+          <polygon points="130,545 120,528 140,528" fill="#3E4F46"/>
+          <text x="130" y="560" text-anchor="middle" font-family="'Public Sans', sans-serif" font-size="13" fill="#3E4F46">aktives Protein</text>
+        </svg>`,
+        caption: "Schematische Abfolge der sieben Regulationsebenen (Kreise 1–7) von der DNA bis zum aktiven Protein.",
+        rows: [
+          { label: "1", answer: "Kontrolle der Transkription" },
+          { label: "2", answer: "Kontrolle der RNA-Prozessierung" },
+          { label: "3", answer: "Kontrolle des mRNA-Transports" },
+          { label: "4", answer: "Kontrolle der mRNA-Stabilität" },
+          { label: "5", answer: "Kontrolle der Translation" },
+          { label: "6", answer: "Kontrolle der Proteinfaltung und -modifikation" },
+          { label: "7", answer: "Kontrolle der Proteinstabilität" }
+        ],
+        choices: [
+          "Kontrolle der mRNA-Stabilität",
+          "Kontrolle der Proteinstabilität",
+          "Kontrolle der Transkription",
+          "Kontrolle der Translation",
+          "Kontrolle der RNA-Prozessierung",
+          "Kontrolle der Proteinfaltung und -modifikation",
+          "Kontrolle des mRNA-Transports"
+        ],
+        exp: "Die sieben Ebenen folgen dem Weg vom Gen zum fertigen Protein: 1 Transkription (DNA → prä-mRNA), 2 RNA-Prozessierung (prä-mRNA → reife mRNA), 3 mRNA-Transport durch die Kernporen, 4 mRNA-Stabilität im Cytoplasma, 5 Translation, 6 Proteinfaltung und -modifikation, 7 Proteinstabilität (Abbau begrenzt die Lebensdauer des Proteins)."
+      }
+    ]
+  },
+  {
+    id: "signal",
+    title: "Extrazelluläre Signale & Myostatin",
+    color: "var(--c-signal)",
+    questions: [
+      {
+        type: "single",
+        text: "Warum benötigen Eukaryoten in Geweben zusätzlich eine Regulation der Genexpression durch extrazelluläre Signale (z. B. Hormone)?",
+        options: [
+          { t: "Damit z. B. die Enzymausstattung der Zellen optimal auf den Stoffwechsel und äußere Bedingungen abgestimmt werden kann.", c: true },
+          { t: "Weil Zellen ohne extrazelluläre Signale keine DNA besitzen.", c: false },
+          { t: "Weil extrazelluläre Signale den genetischen Code der Zelle verändern.", c: false },
+          { t: "Weil nur so überhaupt eine Transkription stattfinden kann.", c: false }
+        ],
+        exp: "In Eukaryoten muss die Genexpression in Geweben so reguliert werden, dass z. B. die Enzymausstattung der Zellen optimal auf den Stoffwechsel abgestimmt ist. Dazu werden u. a. über das Blut transportierte Hormone genutzt, die an Rezeptoren der Zielzellen binden."
+      },
+      {
+        type: "multi",
+        text: "Welche Schritte gehören zur intrazellulären Signalkette, die ein Botenstoff wie Myostatin in der Zielzelle auslöst?",
+        options: [
+          { t: "Bindung des Botenstoffs an einen spezifischen Rezeptor in der Zellmembran.", c: true },
+          { t: "Auslösen einer intrazellulären Signalkette.", c: true },
+          { t: "Aktivierung eines spezifischen Transkriptionsfaktors.", c: true },
+          { t: "Direkte Bindung des Botenstoffs an die DNA im Zellkern.", c: false }
+        ],
+        exp: "Der Botenstoff bindet nach dem Schlüssel-Schloss-Prinzip an seinen Rezeptor in der Zellmembran. Diese Bindung löst eine intrazelluläre Signalkette aus, die letztlich einen spezifischen Transkriptionsfaktor aktiviert — der Botenstoff selbst gelangt nicht in den Zellkern."
+      },
+      {
+        type: "single",
+        text: "Nach welchem Prinzip bindet Myostatin an seinen Rezeptor?",
+        options: [
+          { t: "Nach dem Schlüssel-Schloss-Prinzip.", c: true },
+          { t: "Durch zufällige, völlig unspezifische Anlagerung an beliebige Membranproteine.", c: false },
+          { t: "Über eine kovalente Bindung direkt an die DNA.", c: false },
+          { t: "Durch Diffusion direkt durch die Kernmembran.", c: false }
+        ],
+        exp: "Wie andere Botenstoff-Rezeptor-Paare bindet auch Myostatin hochspezifisch nach dem Schlüssel-Schloss-Prinzip an seinen Rezeptor an der Zellmembran der Zielzelle."
+      },
+      {
+        type: "single",
+        text: "Welche Wirkung hat der von Myostatin aktivierte spezifische Transkriptionsfaktor auf die für das Muskelwachstum verantwortlichen Gene — und was folgt daraus für das Muskelwachstum?",
+        options: [
+          { t: "Er aktiviert diese Gene zusätzlich, wodurch das Muskelwachstum gefördert wird.", c: false },
+          { t: "Er hemmt diese Gene, wodurch das Muskelwachstum begrenzt wird.", c: true },
+          { t: "Er hat keinerlei Einfluss auf diese Gene.", c: false },
+          { t: "Er führt zu einer Mutation dieser Gene.", c: false }
+        ],
+        exp: "Myostatin aktiviert über seinen Rezeptor und die nachgeschaltete Signalkette einen Transkriptionsfaktor, der die für das Muskelwachstum verantwortlichen Gene hemmt. In der Folge wird das Muskelwachstum begrenzt."
+      },
+      {
+        type: "single",
+        text: "Bei manchen Mäusen und Rindern führt eine Mutation im Myostatin-Gen zu übermäßigem Muskelwachstum. Wie lässt sich das erklären?",
+        options: [
+          { t: "Das veränderte Myostatin kann aufgrund der Mutation nicht mehr an seinen Rezeptor binden, wodurch die Hemmung des Muskelwachstums entfällt.", c: true },
+          { t: "Das veränderte Myostatin bindet stärker an seinen Rezeptor und verstärkt dadurch die Hemmung des Muskelwachstums.", c: false },
+          { t: "Die Mutation führt zu einer vollständigen Verdopplung des gesamten Genoms.", c: false },
+          { t: "Die Mutation betrifft ausschließlich Hautzellen und hat keinerlei Effekt auf die Muskulatur.", c: false }
+        ],
+        exp: "Kann Myostatin aufgrund einer strukturellen Veränderung durch die Mutation nicht mehr an seinen Rezeptor binden, entfällt die Hemmung, und es setzt übermäßiges Muskelwachstum ein."
+      },
+      {
+        type: "multi",
+        text: "Welche Aussagen verdeutlichen, warum die Steuerung über einen einzigen Botenstoff wie Myostatin eine effiziente Regulationsstrategie für den Organismus ist?",
+        options: [
+          { t: "Über die Bindung eines einzigen Botenstoffs an einen Rezeptortyp kann eine koordinierte Regulation einer Vielzahl von Zielgenen ausgelöst werden.", c: true },
+          { t: "Der Organismus muss dadurch nicht jedes an einem Prozess wie dem Muskelwachstum beteiligte Gen einzeln und unabhängig regulieren.", c: true },
+          { t: "Diese Strategie funktioniert nur, wenn jedes einzelne Zielgen einen eigenen, unterschiedlichen Botenstoff besitzt.", c: false },
+          { t: "Eine Störung der Rezeptorbindung, z. B. durch Mutation, kann sich auf die gesamte nachgeschaltete Genkaskade auswirken.", c: true }
+        ],
+        exp: "Die Kontrolle zellulärer Funktionen wie des Muskelwachstums erfordert die abgestimmte Regulation vieler Gene. Diese Vielzahl kann durch die Wirkung eines einzigen Botenstoffs koordiniert werden — was zugleich erklärt, warum eine einzelne Mutation im Rezeptor oder im Botenstoff so weitreichende Folgen haben kann."
+      }
+    ]
+  }
+];
+
+/* ============================================================
+   Rendering
+   ============================================================ */
+const quizEl = document.getElementById("quiz");
+const progressTrack = document.getElementById("progress-track");
+const progressLabel = document.getElementById("progress-label");
+
+let totalQuestions = 0;
+BLOCKS.forEach(b => totalQuestions += b.questions.length);
+
+// flat list of {block, blockIdx, q, el} for grading
+const flat = [];
+
+BLOCKS.forEach((block, bIdx) => {
+  const section = document.createElement("section");
+  section.className = "block";
+  section.style.setProperty("--block-color", block.color);
+
+  const head = document.createElement("div");
+  head.className = "block-head";
+  head.innerHTML = `<p class="block-eyebrow">Teil ${bIdx + 1}</p><h2 class="block-title">${block.title}</h2>`;
+  section.appendChild(head);
+
+  block.questions.forEach((q, qIdx) => {
+    const qEl = document.createElement("div");
+    qEl.className = "question";
+    qEl.style.setProperty("--block-color", block.color);
+
+    const globalIndex = flat.length + 1;
+    const typeLabel = q.type === "single" ? "Einfachauswahl" : (q.type === "multi" ? "Mehrfachauswahl" : "Zuordnung");
+    const badges = `<span class="badge type">${typeLabel}</span>`;
+
+    qEl.innerHTML = `
+      <div class="question-top">
+        <span class="qnum">Frage ${globalIndex}</span>
+        <span class="badges">${badges}</span>
+      </div>
+      <p class="qtext">${q.text}</p>
+      <div class="qbody"></div>
+      <p class="result-flag"></p>
+      <div class="explanation">${q.exp}</div>
+    `;
+
+    const bodyWrap = qEl.querySelector(".qbody");
+
+    if (q.type === "match") {
+      if (q.svg) {
+        const diagram = document.createElement("div");
+        diagram.className = "match-diagram";
+        diagram.innerHTML = q.svg + (q.caption ? `<p class="diagram-caption">${q.caption}</p>` : "");
+        bodyWrap.appendChild(diagram);
+      }
+      const rowsWrap = document.createElement("div");
+      rowsWrap.className = "match-rows";
+      const name = `m-${bIdx}-${qIdx}`;
+      q.rows.forEach((row, rIdx) => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "match-row";
+        rowEl.dataset.rowIndex = rIdx;
+
+        const optionsHtml = [`<option value="">– wählen –</option>`]
+          .concat(q.choices.map((c, cIdx) => `<option value="${cIdx}">${c}</option>`))
+          .join("");
+
+        rowEl.innerHTML = `
+          <span class="letter-badge">${row.label}</span>
+          <select name="${name}-${rIdx}" data-row="${rIdx}">${optionsHtml}</select>
+          <span class="row-flag"></span>
+        `;
+        rowsWrap.appendChild(rowEl);
+      });
+      bodyWrap.appendChild(rowsWrap);
+    } else {
+      const optionsWrap = document.createElement("div");
+      optionsWrap.className = "options";
+      const inputType = q.type === "single" ? "radio" : "checkbox";
+      const name = `q-${bIdx}-${qIdx}`;
+
+      q.options.forEach((opt, oIdx) => {
+        const label = document.createElement("label");
+        label.className = "option";
+        label.innerHTML = `
+          <input type="${inputType}" name="${name}" value="${oIdx}">
+          <span>${opt.t}</span>
+        `;
+        optionsWrap.appendChild(label);
+      });
+      bodyWrap.appendChild(optionsWrap);
+    }
+
+    section.appendChild(qEl);
+    flat.push({ block, blockIdx: bIdx, q, el: qEl });
+  });
+
+  quizEl.appendChild(section);
+});
+
+// Fortschrittsbalken: ein Segment pro Frage
+flat.forEach(() => {
+  const seg = document.createElement("div");
+  seg.className = "progress-seg";
+  progressTrack.appendChild(seg);
+});
+const progressSegs = progressTrack.querySelectorAll(".progress-seg");
+
+function isAnsweredItem(item){
+  if (item.q.type === "match") {
+    const selects = item.el.querySelectorAll("select");
+    return Array.from(selects).some(s => s.value !== "");
+  }
+  const inputs = item.el.querySelectorAll("input");
+  return Array.from(inputs).some(inp => inp.checked);
+}
+
+function updateProgress(){
+  let answered = 0;
+  flat.forEach((item, i) => {
+    const answeredItem = isAnsweredItem(item);
+    progressSegs[i].style.background = answeredItem ? item.block.color : "var(--line)";
+    if (answeredItem) answered++;
+  });
+  progressLabel.textContent = `${answered} von ${totalQuestions} Fragen beantwortet`;
+}
+
+quizEl.addEventListener("change", updateProgress);
+updateProgress();
+
+/* ============================================================
+   Auswertung
+   ============================================================ */
+const btnSubmit = document.getElementById("btn-submit");
+const missingHint = document.getElementById("missing-hint");
+const resultsSection = document.getElementById("results");
+
+btnSubmit.addEventListener("click", () => {
+  let answeredCount = 0;
+  flat.forEach(item => { if (isAnsweredItem(item)) answeredCount++; });
+
+  missingHint.style.display = (answeredCount < totalQuestions) ? "block" : "none";
+
+  gradeAll();
+  resultsSection.style.display = "block";
+  btnSubmit.disabled = true;
+  quizEl.querySelectorAll("input").forEach(inp => inp.disabled = true);
+  quizEl.querySelectorAll("select").forEach(sel => sel.disabled = true);
+  quizEl.querySelectorAll(".option").forEach(o => o.classList.add("disabled"));
+  if (typeof resultsSection.scrollIntoView === "function") {
+    resultsSection.scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+let lastScoreSummary = null;
+
+/* ============================================================
+   Anonyme Klassen-Auswertung (optional, freiwillig für den Lehrer)
+   Sendet beim Absenden im Hintergrund einen anonymen Datensatz
+   (kein Name!) an ein Google Sheet. Schlägt der Versand fehl
+   (kein Internet, Adblocker etc.), bleibt die lokale Selbst-
+   auswertung für die Schüler:innen davon unberührt.
+   ============================================================ */
+const RESULT_ENDPOINT = "https://script.google.com/macros/s/AKfycby8x0FGzAFkhU52oOclOp5bjJ9KcYyT_Od0Br0Pj_U531KB6T2MMRBaoazxCbroERGD/exec";
+const TEST_NAME = "Genregulation bei Eukaryoten";
+
+function sendAnonymesErgebnis(summary){
+  if (!RESULT_ENDPOINT) return;
+  try {
+    const themenbloecke = summary.blockStats
+      .map(bs => `${bs.title}: ${bs.correct}/${bs.total}`)
+      .join("; ");
+    const payload = {
+      test: TEST_NAME,
+      klasse: document.getElementById("f-klasse").value || "",
+      punkte: summary.totalCorrect,
+      maxPunkte: summary.totalQuestions,
+      prozent: summary.pct,
+      themenbloecke: themenbloecke
+    };
+    fetch(RESULT_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).catch(() => { /* stiller Fehlschlag - Selbstauswertung bleibt unberührt */ });
+  } catch (e) {
+    /* stiller Fehlschlag - Selbstauswertung bleibt unberührt */
+  }
+}
+
+function gradeAll(){
+  const blockStats = BLOCKS.map(b => ({ title: b.title, color: b.color, correct: 0, total: b.questions.length }));
+  let totalCorrect = 0;
+
+  flat.forEach(item => {
+    const { q, el, blockIdx } = item;
+    el.classList.add("graded");
+    let isFullyCorrect = false;
+
+    if (q.type === "match") {
+      const rows = Array.from(el.querySelectorAll(".match-row"));
+      isFullyCorrect = true;
+      rows.forEach((rowEl, rIdx) => {
+        const select = rowEl.querySelector("select");
+        const selectedIdx = select.value === "" ? -1 : parseInt(select.value, 10);
+        const correctIdx = q.choices.indexOf(q.rows[rIdx].answer);
+        const rowCorrect = selectedIdx === correctIdx;
+        if (!rowCorrect) isFullyCorrect = false;
+        rowEl.classList.add(rowCorrect ? "was-correct" : "was-wrong");
+        const flag = rowEl.querySelector(".row-flag");
+        flag.textContent = rowCorrect ? "✓" : "✗";
+      });
+    } else {
+      const inputs = Array.from(el.querySelectorAll("input"));
+      const selected = inputs.filter(i => i.checked).map(i => parseInt(i.value, 10));
+      const correctIdx = q.options.map((o, i) => o.c ? i : -1).filter(i => i >= 0);
+
+      isFullyCorrect =
+        selected.length === correctIdx.length &&
+        selected.every(i => correctIdx.includes(i));
+
+      inputs.forEach((inp, i) => {
+        const label = inp.closest(".option");
+        const isCorrectOpt = q.options[i].c;
+        const wasSelected = inp.checked;
+        if (isCorrectOpt && wasSelected) label.classList.add("was-correct");
+        else if (isCorrectOpt && !wasSelected) label.classList.add("was-missed");
+        else if (!isCorrectOpt && wasSelected) label.classList.add("was-wrong");
+      });
+    }
+
+    const flag = el.querySelector(".result-flag");
+    if (isFullyCorrect) {
+      flag.textContent = "✓ Richtig";
+      flag.classList.add("ok");
+      totalCorrect++;
+      blockStats[blockIdx].correct++;
+    } else {
+      flag.textContent = "✗ Nicht richtig";
+      flag.classList.add("no");
+    }
+  });
+
+  const pct = Math.round((totalCorrect / totalQuestions) * 100);
+  document.getElementById("score-big").textContent = `${totalCorrect} / ${totalQuestions}`;
+  document.getElementById("score-sub").textContent = `${pct} % richtig`;
+
+  const breakdownEl = document.getElementById("breakdown");
+  breakdownEl.innerHTML = "";
+  blockStats.forEach(bs => {
+    const rowPct = Math.round((bs.correct / bs.total) * 100);
+    const row = document.createElement("div");
+    row.className = "breakdown-row";
+    row.innerHTML = `
+      <span>${bs.title}</span>
+      <span class="breakdown-bar-track"><span class="breakdown-bar-fill" style="width:${rowPct}%; background:${bs.color};"></span></span>
+      <span class="breakdown-count">${bs.correct}/${bs.total}</span>
+    `;
+    breakdownEl.appendChild(row);
+  });
+
+  lastScoreSummary = { totalCorrect, totalQuestions, pct, blockStats };
+  sendAnonymesErgebnis(lastScoreSummary);
+}
+
+/* ============================================================
+   Ergebnis kopieren & Zurücksetzen
+   ============================================================ */
+document.getElementById("btn-copy").addEventListener("click", () => {
+  if (!lastScoreSummary) return;
+  const name = document.getElementById("f-name").value || "(kein Name angegeben)";
+  const klasse = document.getElementById("f-klasse").value || "(keine Klasse angegeben)";
+  const datum = document.getElementById("f-datum").value || "(kein Datum angegeben)";
+
+  let text = `Genregulation bei Eukaryoten — Testergebnis\n`;
+  text += `Name: ${name}\nKlasse: ${klasse}\nDatum: ${datum}\n\n`;
+  text += `Gesamt: ${lastScoreSummary.totalCorrect} / ${lastScoreSummary.totalQuestions} (${lastScoreSummary.pct} %)\n\n`;
+  lastScoreSummary.blockStats.forEach(bs => {
+    text += `${bs.title}: ${bs.correct}/${bs.total}\n`;
+  });
+
+  const feedback = document.getElementById("copy-feedback");
+  navigator.clipboard.writeText(text).then(() => {
+    feedback.style.display = "inline";
+    setTimeout(() => feedback.style.display = "none", 2500);
+  }).catch(() => {
+    // Fallback für Browser ohne Clipboard-API
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    feedback.style.display = "inline";
+    setTimeout(() => feedback.style.display = "none", 2500);
+  });
+});
+
+document.getElementById("btn-restart").addEventListener("click", () => {
+  window.location.reload();
+});
+</script>
+</body>
+</html>
+
