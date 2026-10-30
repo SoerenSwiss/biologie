@@ -55,7 +55,7 @@
 
 <script>
 // ===== Konfiguration =====
-const TEST_NAME = "Neurophysiologie_Einfuehrung_20Fragen";
+const TEST_NAME = "Einführung in die Neurophysiologie";
 const SHEET_URL = "https://script.google.com/macros/s/AKfycby8x0FGzAFkhU52oOclOp5bjJ9KcYyT_Od0Br0Pj_U531KB6T2MMRBaoazxCbroERGD/exec";
 
 // o: [Text, richtig?]   multi: true = mehrere Antworten richtig
@@ -178,10 +178,11 @@ btn.addEventListener('click', ()=>{
   const payload = {
     test: TEST_NAME,
     klasse: document.getElementById('klasse').value.trim() || "unbekannt",
-    datum: new Date().toISOString(),
-    punkte: pts, max: items.length,
-    themen: topics,
-    fragen: items.map((it,i)=>({nr:i+1, thema:it.t, richtig:res[i]}))
+    punkte: pts,
+    maxPunkte: items.length,
+    prozent: pct,
+    fragen: res.join(','),
+    themenbloecke: Object.entries(topics).map(([k,v])=>`${k}: ${v.p}/${v.m}`).join('; ')
   };
   fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
     .then(()=>{document.getElementById('sent').textContent='Dein Ergebnis wurde anonym übermittelt.';})
