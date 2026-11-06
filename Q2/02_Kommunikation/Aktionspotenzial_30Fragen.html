@@ -1,1 +1,111 @@
 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biologie-Test: Aktionspotenzial &amp; saltatorische Erregungsleitung</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Verdana,Geneva,sans-serif;background:#f3f6f4;color:#1f2a24;margin:0;line-height:1.5}
+.wrap{max-width:820px;margin:0 auto;padding:16px}
+header{background:#1d5c43;color:#fff;border-radius:12px;padding:20px 22px;margin-bottom:16px}
+header h1{margin:0 0 6px;font-size:1.35rem}
+header p{margin:0;font-size:.9rem;opacity:.92}
+.card{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.block{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:#1d5c43;font-weight:bold;margin:20px 0 8px}
+.qh{font-weight:bold;margin:0 0 4px}
+.typ{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;background:#e4efe9;color:#1d5c43;margin-bottom:8px}
+.typ.m{background:#fdecc8;color:#7a5200}
+label.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid #d5ddd8;border-radius:8px;margin:6px 0;cursor:pointer}
+label.opt:hover{background:#f3f8f5}
+label.opt input{margin-top:4px}
+.mt{border-collapse:collapse;margin:8px 0 10px;font-size:.82rem;width:100%}
+.mt th,.mt td{border:1px solid #c8d2cc;padding:4px 6px;text-align:center}
+.mt th{background:#e4efe9;text-align:left}
+.opt.ok{background:#e1f4e7;border-color:#2e8b57}
+.opt.miss{background:#fff6dc;border-color:#d9a400}
+.opt.bad{background:#fde5e5;border-color:#c0392b}
+.expl{margin-top:8px;font-size:.88rem;background:#f3f6f4;border-left:4px solid #1d5c43;padding:8px 10px;border-radius:4px}
+.res{font-weight:bold;margin:0 0 6px}
+.res.r{color:#1e7a46}.res.f{color:#b02a1f}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=text]{font:inherit;padding:8px 10px;border:1px solid #b8c4bd;border-radius:8px;min-width:200px}
+button{font:inherit;font-weight:bold;background:#1d5c43;color:#fff;border:0;border-radius:8px;padding:12px 22px;cursor:pointer}
+button:disabled{background:#8aa89b;cursor:default}
+#result{display:none}
+.bar{height:14px;background:#e4e9e6;border-radius:7px;overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%}
+.small{font-size:.8rem;color:#55645b}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Aktionspotenzial &amp; saltatorische Erregungsleitung</h1>
+<p>Biologie · Neurophysiologie · 30 Fragen · Einfachauswahl (genau eine Antwort) und Mehrfachauswahl (mehrere Antworten können richtig sein)</p>
+</header>
+<div class="card">
+<p style="margin-top:0"><b>Hinweise:</b> Bei Einfachauswahl ist genau eine Antwort richtig. Bei Mehrfachauswahl gibt es den Punkt nur, wenn du <b>alle</b> richtigen und <b>keine</b> falschen Antworten markierst. Der Test ist anonym: Du gibst nur deine Klasse bzw. deinen Kurs an.</p>
+<div class="top"><label for="klasse"><b>Klasse / Kurs:</b></label><input type="text" id="klasse" placeholder="z. B. LK12"></div>
+</div>
+<div id="quiz"></div>
+<div class="card top"><button id="go">Test auswerten</button><span class="small" id="hint"></span></div>
+<div id="result" class="card"></div>
+</div>
+<script>
+var TEST="Aktionspotenzial", URL_="https://script.google.com/macros/s/AKfycby8x0FGzAFkhU52oOclOp5bjJ9KcYyT_Od0Br0Pj_U531KB6T2MMRBaoazxCbroERGD/exec";
+var Q=[{"b":"Ruhepotenzial","t":"s","q":"Welcher Wert ist für das Ruhepotenzial eines Neurons typisch?","o":[["ca. −70 mV, innen negativ gegenüber außen",1],["ca. 0 mV, innen und außen ladungsgleich",0],["ca. +40 mV, innen positiv gegenüber außen",0],["ca. −10 mV, innen leicht negativ",0]],"e":"Das Ruhepotenzial liegt bei etwa −70 mV: Die Innenseite der Membran ist gegenüber außen negativ.","h":""},{"b":"Ruhepotenzial","t":"m","q":"Welche Aussagen zum Ruhepotenzial sind richtig?","o":[["Die Membran ist im Ruhezustand vor allem K+-durchlässig",1],["Die Na+/K+-ATPase erhält die Ionengradienten dauerhaft aufrecht",1],["Im Ruhezustand sind alle spannungsgesteuerten Na+-Kanäle weit offen",0],["Die Na+-Konzentration ist innen höher als außen",0],["Die Zellinnenseite ist im Ruhezustand gegenüber außen positiv geladen",0]],"e":"Im Ruhezustand sind v. a. K+-Ruhekanäle offen; die ATPase hält die Gradienten (Na+ außen hoch, K+ innen hoch). Die spannungsgesteuerten Na+-Kanäle sind geschlossen.","h":""},{"b":"AP-Verlauf (Grafik)","t":"s","q":"Ab welchem Wert wird ein Aktionspotenzial ausgelöst (Schwellenwert)?","o":[["ca. −55 mV, etwas positiver als das Ruhepotenzial",1],["ca. −90 mV, deutlich negativer als das Ruhepotenzial",0],["ca. 0 mV, genau auf der Nulllinie des Diagramms",0],["ca. +30 mV, auf Höhe des Overshoots",0]],"e":"Der Schwellenwert liegt bei etwa −55 mV. Wird er erreicht, öffnen sich die Na+-Kanäle lawinenartig.","h":""},{"b":"AP-Verlauf (Grafik)","t":"s","q":"Was bezeichnet man als Overshoot?","o":[["Den Teil des APs, in dem das Potenzial positiv wird",1],["Den Teil des APs, der unter dem Ruhepotenzial liegt",0],["Den Teil des APs vor dem Erreichen des Schwellenwerts",0],["Den Teil des APs, in dem wieder das Ruhepotenzial erreicht wird",0]],"e":"Overshoot = Umkehr der Ladung: Das Membranpotenzial ist kurzzeitig positiv (bis ca. +30 bis +40 mV).","h":""},{"b":"AP-Verlauf (Grafik)","t":"s","q":"Was bedeutet Hyperpolarisation?","o":[["Eine Verschiebung des Potenzials unter das Ruhepotenzial",1],["Eine Verschiebung des Potenzials über den Schwellenwert",0],["Eine Verschiebung des Potenzials in den positiven Bereich",0],["Eine Rückkehr des Potenzials zum Ruhepotenzial hin",0]],"e":"Hyperpolarisation = das Potenzial ist negativer als das Ruhepotenzial (Nachpotenzial, ca. −80 mV).","h":""},{"b":"AP-Verlauf (Grafik)","t":"m","q":"Welche Zuordnungen am AP-Graphen sind richtig?","o":[["Der Aufstrich entspricht der Depolarisation",1],["Der Abstrich entspricht der Repolarisation",1],["Das Nachpotenzial entspricht einer Hyperpolarisation",1],["Der Overshoot liegt unter dem Ruhepotenzial",0],["Der Schwellenwert ist der höchste Punkt des APs",0]],"e":"Aufstrich = Depolarisation, Abstrich = Repolarisation, Nachpotenzial = Hyperpolarisation. Der Overshoot liegt über 0 mV, der Schwellenwert ganz am Anfang des Aufstrichs.","h":""},{"b":"AP-Verlauf (Grafik)","t":"s","q":"Wie lange dauert ein einzelnes AP (Spike) am Axon typischerweise?","o":[["etwa 1–2 ms",1],["etwa 20–30 ms",0],["etwa 200–300 ms",0],["etwa 1–2 s",0]],"e":"Ein Spike dauert nur etwa 1–2 ms. Das Neuron kann daher sehr schnelle Signalfolgen übertragen.","h":""},{"b":"AP-Verlauf (Grafik)","t":"m","q":"Eine Messung am Axon ergab die Werte der Tabelle (Reiz bei 0 ms). Welche Aussagen sind richtig?","o":[["Der Schwellenwert wird nach ca. 0,5 ms erreicht",1],["Das Maximum (Overshoot) liegt bei ca. 1,0 ms",1],["Bei 3,0 ms liegt eine Hyperpolarisation vor",1],["Bei 1,5 ms läuft noch die Depolarisation (Aufstrich) ab",0],["Bei 0,5 ms ist die Repolarisation bereits abgeschlossen",0]],"e":"−55 mV bei 0,5 ms = Schwelle; +35 mV bei 1,0 ms = Maximum; −80 mV bei 3,0 ms = Hyperpolarisation. Bei 1,5 ms sinkt das Potenzial schon (Repolarisation).","h":"<table class=\"mt\"><tr><th>Zeit nach Reiz</th><td>0 ms</td><td>0,5 ms</td><td>1,0 ms</td><td>1,5 ms</td><td>2,0 ms</td><td>3,0 ms</td><td>5,0 ms</td></tr><tr><th>Membranpotenzial</th><td>−70 mV</td><td>−55 mV</td><td>+35 mV</td><td>−20 mV</td><td>−70 mV</td><td>−80 mV</td><td>−70 mV</td></tr></table>"},{"b":"Ionenkanäle & Zeitverlauf","t":"s","q":"Was löst den Aufstrich des Aktionspotenzials aus?","o":[["Spannungsgesteuerte Na+-Kanäle öffnen und Na+ strömt ein",1],["Spannungsgesteuerte K+-Kanäle öffnen und K+ strömt ein",0],["Die Na+/K+-ATPase pumpt Na+ aktiv in die Zelle hinein",0],["Spannungsgesteuerte Cl−-Kanäle öffnen und Cl− strömt aus",0]],"e":"Beim Schwellenwert öffnen spannungsgesteuerte Na+-Kanäle; Na+ strömt passiv (Konzentrations- und Ladungsgefälle) in die Zelle.","h":""},{"b":"Ionenkanäle & Zeitverlauf","t":"s","q":"Warum endet der Na+-Einstrom nach etwa 1 ms wieder?","o":[["Die Na+-Kanäle werden nach kurzer Zeit inaktiviert",1],["Die Na+-Konzentration innen hat sich der außen angeglichen",0],["Die Na+/K+-ATPase pumpt alle Na+ sofort wieder hinaus",0],["Die K+-Kanäle verschließen die Na+-Kanäle von außen",0]],"e":"Die Na+-Kanäle besitzen ein Inaktivierungstor, das sich nach ca. 1 ms schließt. Die Konzentrationen ändern sich dabei kaum.","h":""},{"b":"Ionenkanäle & Zeitverlauf","t":"m","q":"Welche Aussagen zur Repolarisation (Abstrich) sind richtig?","o":[["Spannungsgesteuerte K+-Kanäle öffnen mit leichter Verzögerung",1],["K+-Ionen strömen aus der Zelle hinaus",1],["Die Na+-Kanäle sind in dieser Phase inaktiviert",1],["Die Na+/K+-ATPase verursacht den schnellen Abstrich",0],["Na+-Ionen strömen verstärkt in die Zelle hinein",0]],"e":"Repolarisation: K+-Ausstrom bei inaktivierten Na+-Kanälen. Die ATPase arbeitet viel zu langsam, um den Abstrich zu bewirken.","h":""},{"b":"Ionenkanäle & Zeitverlauf","t":"s","q":"Wodurch entsteht die Hyperpolarisation (Nachpotenzial)?","o":[["K+-Kanäle schließen verzögert, K+ strömt noch aus",1],["Die Na+-Kanäle öffnen erneut, Na+ strömt weiter ein",0],["Die Cl−-Kanäle öffnen und Cl− strömt aus der Zelle heraus",0],["Die Na+/K+-ATPase fällt kurzzeitig vollständig aus",0]],"e":"Die K+-Kanäle sind noch kurz offen, obwohl das Ruhepotenzial schon erreicht ist. Es strömt zu viel K+ aus, das Potenzial sinkt unter −70 mV.","h":""},{"b":"Ionenkanäle & Zeitverlauf","t":"m","q":"Welche Aussagen zur Ionenbilanz sind richtig?","o":[["Pro AP ändern sich die Ionenkonzentrationen nur minimal",1],["Die ATPase stellt die Verteilung nach vielen APs wieder her",1],["Pro AP halbiert sich die Na+-Konzentration außerhalb der Zelle",0],["Die ATPase pumpt während des Aufstrichs Na+ in die Zelle",0]],"e":"Nur sehr wenige Ionen wandern pro AP. Die ATPase pumpt 3 Na+ hinaus und 2 K+ hinein und stellt so die Gradienten langfristig wieder her.","h":""},{"b":"Ionenkanäle & Zeitverlauf","t":"s","q":"Das Kugelfischgift Tetrodotoxin blockiert spannungsgesteuerte Na+-Kanäle. Was geschieht bei einem überschwelligen Reiz?","o":[["Das AP bleibt aus, da kein Na+-Einstrom möglich ist",1],["Das AP wird länger, da die Repolarisation verzögert ist",0],["Das AP wird höher, da mehr Na+ in die Zelle einströmt",0],["Das AP bleibt, nur das Ruhepotenzial steigt auf +30 mV",0]],"e":"Ohne Na+-Einstrom gibt es keinen Aufstrich und damit kein AP – die Nervenleitung fällt aus (Lähmung).","h":""},{"b":"Refraktärzeit & Fortleitung","t":"s","q":"Was gilt während der absoluten Refraktärzeit (ca. 1–2 ms nach Beginn des APs)?","o":[["Kein neues AP auslösbar, weil Na+-Kanäle inaktiviert sind",1],["Kein neues AP auslösbar, weil die ATP-Vorräte leer sind",0],["Neues AP nur mit starkem Reiz auslösbar, K+-Kanäle noch offen",0],["Neues AP sofort auslösbar, weil Na+-Kanäle wieder bereit sind",0]],"e":"Solange die Na+-Kanäle inaktiviert sind, kann auch ein starker Reiz kein neues AP auslösen.","h":""},{"b":"Refraktärzeit & Fortleitung","t":"s","q":"Was gilt während der relativen Refraktärzeit (ca. 2–5 ms)?","o":[["Ein AP ist nur durch einen stärkeren Reiz auslösbar",1],["Ein AP ist auch durch einen sehr starken Reiz nicht auslösbar",0],["Ein AP ist durch einen schwächeren Reiz als sonst auslösbar",0],["Ein AP ist auslösbar, fällt aber immer deutlich größer aus",0]],"e":"Ein Teil der Na+-Kanäle ist wieder bereit, die Membran ist aber hyperpolarisiert: Der Schwellenwert ist nur mit einem stärkeren Reiz erreichbar.","h":""},{"b":"Refraktärzeit & Fortleitung","t":"m","q":"Welche Funktionen hat die Refraktärzeit?","o":[["Das AP kann sich nur in eine Richtung ausbreiten",1],["Aufeinanderfolgende APs bleiben einzelne, getrennte Impulse",1],["Die maximale AP-Frequenz wird begrenzt",1],["Die Amplitude folgender APs wird dadurch erhöht",0],["Die Leitungsgeschwindigkeit des Axons wird verdoppelt",0]],"e":"Das gerade durchlaufene Axonstück ist unerregbar: Das AP kann nicht zurücklaufen, die Impulse bleiben getrennt und die Frequenz ist nach oben begrenzt.","h":""},{"b":"Refraktärzeit & Fortleitung","t":"s","q":"Wie wird die Stärke eines Reizes im Axon codiert?","o":[["Durch die Frequenz der APs bei gleichbleibender Amplitude",1],["Durch die Amplitude der einzelnen APs bei gleicher Frequenz",0],["Durch die Dauer eines einzelnen APs in Millisekunden",0],["Durch die Höhe des Ruhepotenzials unmittelbar vor dem Reiz",0]],"e":"Alles-oder-Nichts-Prinzip: Jedes AP hat dieselbe Amplitude. Ein stärkerer Reiz erzeugt mehr APs pro Zeit.","h":""},{"b":"Refraktärzeit & Fortleitung","t":"s","q":"Wie wird die Erregung in einem marklosen Axon fortgeleitet?","o":[["Durch lokale Kreisströme, die die Nachbarstelle erregen",1],["Durch Diffusion von Na+ über die gesamte Axonlänge hinweg",0],["Durch aktives Pumpen der Na+/K+-ATPase entlang des Axons",0],["Durch Ca2+-Ionen, die das Signal bis zum Ende weiterleiten",0]],"e":"Lokale Ströme depolarisieren die Nachbarstelle bis zum Schwellenwert, dort entsteht ein neues AP (kontinuierliche Erregungsleitung).","h":""},{"b":"Saltatorische Erregungsleitung","t":"s","q":"Wo entstehen Aktionspotenziale in einem markhaltigen Axon?","o":[["Nur an den Schnürringen, wo viele Na+-Kanäle liegen",1],["Nur unter der Myelinscheide, wo viele Na+-Kanäle liegen",0],["Gleichmäßig verteilt, da überall Na+-Kanäle liegen",0],["Nur am Axonhügel, danach läuft der Impuls passiv weiter",0]],"e":"Die spannungsgesteuerten Na+-Kanäle sind an den Ranvier'schen Schnürringen konzentriert; unter dem Myelin gibt es kaum welche.","h":""},{"b":"Saltatorische Erregungsleitung","t":"m","q":"Welche Aussagen zur saltatorischen Erregungsleitung sind richtig?","o":[["Die Myelinscheide isoliert das Axon zwischen den Schnürringen",1],["Zwischen den Schnürringen fließen Kreisströme im Axoplasma",1],["An jedem Schnürring wird das AP neu gebildet",1],["Im Internodium öffnen sich viele spannungsgesteuerte Na+-Kanäle",0],["Das AP wandert ohne Ionenströme von Ring zu Ring",0]],"e":"Das Myelin isoliert, im Internodium fließt ein passiver Kreisstrom, und am nächsten Schnürring entsteht ein neues AP. Ohne Ionenstrom gäbe es kein AP.","h":""},{"b":"Saltatorische Erregungsleitung","t":"s","q":"Warum ist die saltatorische Erregungsleitung energiesparender?","o":[["Nur an Schnürringen strömen Ionen, die ATPase pumpt weniger",1],["Die Myelinscheide liefert dem Axon direkt zusätzliches ATP",0],["Die Schnürringe besitzen keine Na+/K+-ATPase und sparen ATP",0],["Das Ruhepotenzial ist in markhaltigen Axonen deutlich kleiner",0]],"e":"Weil Ionen nur an den Schnürringen die Membran passieren, müssen weniger Ionen zurückgepumpt werden.","h":""},{"b":"Saltatorische Erregungsleitung","t":"m","q":"Was geschieht bei einer Demyelinisierung (z. B. Multiple Sklerose)?","o":[["Die Leitungsgeschwindigkeit sinkt deutlich",1],["Impulse können abgeschwächt ankommen oder ganz ausfallen",1],["Es kann zu Gefühls- und Bewegungsstörungen kommen",1],["Die Leitungsgeschwindigkeit steigt, da Ionen freier strömen",0],["Das Ruhepotenzial verschiebt sich dauerhaft auf +30 mV",0]],"e":"Ohne Isolation gehen Kreisströme verloren: Die Leitung wird langsamer oder bricht ab, was zu Ausfällen führt.","h":""},{"b":"Saltatorische Erregungsleitung","t":"s","q":"Welche Zellen bilden die Myelinscheide im Zentralnervensystem?","o":[["Oligodendrozyten",1],["Schwann'sche Zellen",0],["Astrozyten",0],["Mikrogliazellen",0]],"e":"Im ZNS bilden Oligodendrozyten, im peripheren Nervensystem Schwann-Zellen die Myelinscheide.","h":""},{"b":"Leitungsgeschwindigkeit","t":"s","q":"Wie schnell leiten marklose Axone (z. B. Schmerzfasern) typischerweise?","o":[["etwa 0,5–2 m/s",1],["etwa 20–30 m/s",0],["etwa 80–120 m/s",0],["etwa 300–400 m/s",0]],"e":"Marklose Axone leiten nur mit etwa 0,5–2 m/s (Schrittgeschwindigkeit).","h":""},{"b":"Leitungsgeschwindigkeit","t":"s","q":"Wie schnell leiten dicke markhaltige Axone maximal?","o":[["bis etwa 100–120 m/s",1],["bis etwa 5–10 m/s",0],["bis etwa 300–400 m/s",0],["bis etwa 1000 m/s",0]],"e":"Dicke markhaltige Axone erreichen bis ca. 120 m/s (über 400 km/h).","h":""},{"b":"Leitungsgeschwindigkeit","t":"s","q":"Ein Impuls legt 0,6 m in 6 ms zurück. Wie groß ist die Leitungsgeschwindigkeit?","o":[["100 m/s",1],["10 m/s",0],["1 m/s",0],["1000 m/s",0]],"e":"v = s : t = 0,6 m : 0,006 s = 100 m/s.","h":""},{"b":"Leitungsgeschwindigkeit","t":"m","q":"Ein Reiz läuft über eine Strecke von 1,2 m. Welche Aussagen sind richtig?","o":[["Markhaltig (100 m/s): Leitungsdauer ca. 12 ms",1],["Marklos (1 m/s): Leitungsdauer ca. 1,2 s",1],["Marklos dauert etwa 100-mal so lange wie markhaltig",1],["Beide Axontypen brauchen für die Strecke etwa gleich lange",0],["Marklos (1 m/s): Leitungsdauer ca. 0,12 s (also 120 ms)",0]],"e":"t = s : v. Markhaltig: 1,2 m : 100 m/s = 0,012 s = 12 ms. Marklos: 1,2 m : 1 m/s = 1,2 s. Verhältnis 100 : 1.","h":""},{"b":"Leitungsgeschwindigkeit","t":"m","q":"Welche Faktoren erhöhen die Leitungsgeschwindigkeit eines Axons?","o":[["Ein größerer Durchmesser des Axons",1],["Eine Myelinscheide um das Axon",1],["Eine höhere Temperatur des Gewebes",1],["Ein höherer Overshoot-Wert des APs",0],["Mehr Na+/K+-ATPasen in der Membran",0]],"e":"Dickere Axone haben weniger inneren Widerstand, Myelin ermöglicht Sprünge, und Wärme beschleunigt die Kanäle. Overshoot und Pumpenzahl ändern die Geschwindigkeit nicht.","h":""},{"b":"Leitungsgeschwindigkeit","t":"s","q":"Ein marklos leitendes Riesenaxon des Tintenfischs (Durchmesser ca. 1 mm) erreicht ca. 25 m/s. Wie ist das möglich?","o":[["Der große Durchmesser verringert den Widerstand im Axon",1],["Das Ruhepotenzial ist deutlich größer als bei dünnen Axonen",0],["Die Refraktärzeit ist deutlich länger als bei dünnen Axonen",0],["Die Na+-Kanäle sind nur an wenigen Stellen gebündelt",0]],"e":"Ein großer Durchmesser senkt den Längswiderstand, die Kreisströme reichen weiter. Wirbellose lösen so das Tempo-Problem, Wirbeltiere durch Myelin mit dünnen Axonen.","h":""}];
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+// Optionen pro Aufruf mischen
+Q.forEach(function(q){q.o=shuffle(q.o.map(function(x){return {t:x[0],c:x[1]};}));});
+var box=document.getElementById('quiz'), last='';
+Q.forEach(function(q,i){
+  if(q.b!==last){var d=document.createElement('div');d.className='block';d.textContent=q.b;box.appendChild(d);last=q.b;}
+  var c=document.createElement('div');c.className='card';c.id='q'+i;
+  var h='<p class="qh">'+(i+1)+'. '+esc(q.q)+'</p><span class="typ '+q.t+'">'+(q.t==='s'?'Einfachauswahl':'Mehrfachauswahl')+'</span>'+q.h;
+  q.o.forEach(function(o,k){h+='<label class="opt" id="q'+i+'o'+k+'"><input type="'+(q.t==='s'?'radio':'checkbox')+'" name="q'+i+'" value="'+k+'"><span>'+esc(o.t)+'</span></label>';});
+  h+='<div class="expl" style="display:none" id="e'+i+'"></div>';
+  c.innerHTML=h;box.appendChild(c);
+});
+document.getElementById('go').onclick=function(){
+  var klasse=document.getElementById('klasse').value.trim();
+  if(!klasse){document.getElementById('hint').textContent='Bitte zuerst Klasse / Kurs eintragen.';document.getElementById('klasse').focus();return;}
+  var open=0;
+  Q.forEach(function(q,i){if(!document.querySelector('input[name=q'+i+']:checked'))open++;});
+  if(open>0&&!window._confirmed){document.getElementById('hint').textContent=open+' Frage(n) noch unbeantwortet. Zum Auswerten trotzdem nochmals klicken.';window._confirmed=true;return;}
+  var pts=0, bl={}, fr=[];
+  Q.forEach(function(q,i){
+    var ok=true;
+    q.o.forEach(function(o,k){
+      var inp=document.querySelector('#q'+i+'o'+k+' input'), lab=document.getElementById('q'+i+'o'+k);
+      var chk=inp.checked; inp.disabled=true;
+      if(chk!==!!o.c)ok=false;
+      if(o.c&&chk)lab.classList.add('ok'); else if(o.c&&!chk)lab.classList.add('miss'); else if(!o.c&&chk)lab.classList.add('bad');
+    });
+    if(!bl[q.b])bl[q.b]=[0,0]; bl[q.b][1]++;
+    if(ok){pts++;bl[q.b][0]++;}
+    fr.push(ok?1:0);
+    var e=document.getElementById('e'+i);e.style.display='block';
+    e.innerHTML='<p class="res '+(ok?'r':'f')+'">'+(ok?'Richtig':'Nicht ganz richtig – grün: richtige Antwort, gelb: übersehen, rot: falsch markiert')+'</p>'+esc(q.e);
+  });
+  var max=Q.length, pr=Math.round(pts/max*100);
+  var tb=Object.keys(bl).map(function(k){return k+': '+bl[k][0]+'/'+bl[k][1];}).join('; ');
+  var r=document.getElementById('result');r.style.display='block';
+  var col=function(p){return p>75?'#2e8b57':(p>=50?'#d9a400':'#c0392b');};
+  var h='<h2 style="margin-top:0">Ergebnis: '+pts+' von '+max+' Punkten ('+pr+' %)</h2><div class="bar"><i style="width:'+pr+'%;background:'+col(pr)+'"></i></div><p><b>Nach Themenbereichen:</b></p>';
+  Object.keys(bl).forEach(function(k){var p=Math.round(bl[k][0]/bl[k][1]*100);h+='<div>'+esc(k)+': '+bl[k][0]+' von '+bl[k][1]+' ('+p+' %)</div><div class="bar"><i style="width:'+p+'%;background:'+col(p)+'"></i></div>';});
+  h+='<p class="small" id="sent">Ergebnis wird anonym an deine Lehrkraft übermittelt …</p>';
+  r.innerHTML=h;r.scrollIntoView({behavior:'smooth'});
+  document.getElementById('go').disabled=true;
+  var payload={test:TEST,klasse:klasse,punkte:pts,maxPunkte:max,prozent:pr,themenbloecke:tb,fragen:fr.join(',')};
+  try{
+    fetch(URL_,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+    .then(function(){document.getElementById('sent').textContent='Ergebnis anonym übermittelt (nur Klasse, keine Namen).';})
+    .catch(function(){document.getElementById('sent').textContent='Übermittlung nicht möglich – dein Ergebnis siehst du trotzdem hier.';});
+  }catch(e){document.getElementById('sent').textContent='Übermittlung nicht möglich – dein Ergebnis siehst du trotzdem hier.';}
+};
+</script>
+</body>
+</html>
