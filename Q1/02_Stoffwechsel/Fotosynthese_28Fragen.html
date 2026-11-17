@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fotosynthese – MC-Test (28 Fragen)</title>
+<style>
+:root{--g:#2e7d32;--gl:#e8f5e9;--r:#c62828;--rl:#ffebee;--b:#1b5e20;--t:#1f2933;--m:#5f6b76;--l:#d9e0e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:Verdana,Geneva,sans-serif;font-size:15px;line-height:1.5;color:var(--t);background:#f4f7f5}
+.wrap{max-width:820px;margin:0 auto;padding:16px}
+header{background:var(--g);color:#fff;border-radius:12px;padding:18px 20px;margin-bottom:16px}
+header h1{margin:0 0 4px;font-size:22px}
+header p{margin:0;font-size:13px;opacity:.92}
+.card{background:#fff;border:1px solid var(--l);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.card h2{margin:0 0 8px;font-size:17px}
+.blk{margin:22px 0 8px;font-size:16px;font-weight:bold;color:var(--b);border-bottom:2px solid var(--g);padding-bottom:4px}
+.q{font-weight:bold;margin:0 0 4px}
+.tag{display:inline-block;font-size:11px;font-weight:normal;border-radius:10px;padding:1px 8px;margin-left:6px;vertical-align:middle;background:#e3f2fd;color:#0d47a1}
+.tag.s{background:#f1f3f5;color:var(--m)}
+label.o{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;margin:6px 0;border:1px solid var(--l);border-radius:8px;cursor:pointer}
+label.o:hover{background:#f7faf8}
+label.o input{margin-top:4px;flex:none}
+label.o.ok{background:var(--gl);border-color:var(--g)}
+label.o.bad{background:var(--rl);border-color:var(--r)}
+label.o.miss{border:2px dashed var(--g)}
+.ex{display:none;margin-top:8px;padding:8px 10px;border-left:4px solid var(--g);background:#f7faf8;font-size:13.5px}
+.ex.w{border-left-color:var(--r)}
+.show .ex{display:block}
+input[type=text]{font:inherit;padding:8px 10px;border:1px solid var(--l);border-radius:8px;width:100%;max-width:280px}
+button{font:inherit;font-weight:bold;background:var(--g);color:#fff;border:0;border-radius:8px;padding:10px 18px;cursor:pointer}
+button.sec{background:#fff;color:var(--g);border:2px solid var(--g)}
+button:disabled{opacity:.5;cursor:default}
+.bar{height:14px;background:var(--l);border-radius:7px;overflow:hidden}
+.bar i{display:block;height:100%}
+.row{display:grid;grid-template-columns:1fr 70px;gap:10px;align-items:center;margin:8px 0}
+.row span.n{font-size:13px}
+.big{font-size:30px;font-weight:bold;color:var(--b)}
+.hint{font-size:13px;color:var(--m)}
+.hide{display:none}
+@media print{button{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Fotosynthese – MC-Test</h1>
+<p>28 Fragen · Einfach- und Mehrfachauswahl · Grundkursniveau · Themen: Chloroplast, Summengleichung, lichtabhängige und lichtunabhängige Reaktionen, Aufbau des C6-Körpers</p>
+</header>
+
+<div class="card" id="start">
+<h2>Bevor es losgeht</h2>
+<p>Bei <b>Einfachauswahl</b> ist genau eine Antwort richtig. Bei <b>Mehrfachauswahl</b> können mehrere Antworten richtig sein; einen Punkt gibt es nur, wenn du <b>genau</b> die richtigen Antworten ankreuzt. Es gibt keine Minuspunkte.</p>
+<p>Dein Ergebnis wird anonym an deine Lehrkraft übermittelt, damit sie sieht, welche Themen noch geübt werden sollten. Gib daher <b>keinen Namen</b> ein, nur deine Klasse bzw. deinen Kurs.</p>
+<p><label for="klasse"><b>Klasse / Kurs</b> (z. B. „Bio Gk1“ oder „11a“):</label><br>
+<input type="text" id="klasse" maxlength="30" autocomplete="off"></p>
+<button id="go">Test starten</button>
+<p class="hint hide" id="kerr" style="color:var(--r)">Bitte gib deine Klasse bzw. deinen Kurs ein.</p>
+</div>
+
+<div id="test" class="hide">
+<div id="qs"></div>
+<div class="card">
+<button id="fin">Test auswerten</button>
+<p class="hint" id="open"></p>
+</div>
+</div>
+
+<div id="res" class="card hide">
+<h2>Dein Ergebnis</h2>
+<div class="big" id="tot"></div>
+<p class="hint" id="sent"></p>
+<div id="blocks"></div>
+<p class="hint">Unten findest du zu jeder Frage die richtige Lösung mit kurzer Erklärung. Themen mit rotem Balken solltest du noch einmal wiederholen.</p>
+<button class="sec" onclick="location.reload()">Test neu starten</button>
+</div>
+</div>
+
+<script>
+var TESTNAME="Fotosynthese";
+var SHEET_URL="https://script.google.com/macros/s/AKfycby8x0FGzAFkhU52oOclOp5bjJ9KcYyT_Od0Br0Pj_U531KB6T2MMRBaoazxCbroERGD/exec";
+var BLOCKS=["Aufbau des Chloroplasten","Summengleichung der Fotosynthese","Lichtabhängige Reaktionen","Lichtunabhängige Reaktionen & Aufbau des C6-Körpers"];
+/* b = Themenblock, t = s (Einfachauswahl) / m (Mehrfachauswahl), o = [Text, richtig?] */
+var Q=[
+{b:0,t:"s",q:"Wie ist ein Chloroplast nach außen abgegrenzt?",o:[
+["Durch eine Doppelmembran aus äußerer und innerer Hüllmembran",1],
+["Durch eine einfache Membran, die direkt an das Stroma grenzt",0],
+["Durch eine Zellwand aus Cellulose mit einer inneren Membran",0],
+["Durch drei Membranen, die das Thylakoidsystem umschließen",0]],
+e:"Chloroplasten sind von einer Doppelmembran (Hülle) umgeben. Eine Zellwand besitzt nur die gesamte Pflanzenzelle, nicht das Organell."},
+{b:0,t:"s",q:"Wie nennt man einen Stapel aus scheibenförmigen Thylakoiden?",o:[
+["Granum",1],["Stroma",0],["Crista",0],["Matrix",0]],
+e:"Die gestapelten Thylakoide heißen Grana (Singular: Granum). Das Stroma ist die Grundsubstanz um die Thylakoide, Cristae und Matrix gehören zum Mitochondrium."},
+{b:0,t:"s",q:"Welcher Raum wird von der Thylakoidmembran umschlossen?",o:[
+["Das Thylakoidlumen als Innenraum der Thylakoide",1],
+["Das Stroma als Grundsubstanz des Chloroplasten",0],
+["Der Intermembranraum zwischen den beiden Hüllmembranen",0],
+["Das Cytoplasma der Pflanzenzelle außerhalb des Chloroplasten",0]],
+e:"Die Thylakoidmembran umschließt das Thylakoidlumen. Das Stroma liegt außerhalb der Thylakoide, aber innerhalb der inneren Hüllmembran."},
+{b:0,t:"m",q:"Welche Bestandteile gehören zu einem Chloroplasten?",o:[
+["Thylakoide als abgeflachte, membranumgrenzte Säckchen",1],
+["Stroma als Grundsubstanz mit Enzymen und Ribosomen",1],
+["Ringförmige DNA als eigenes Erbgut im Stroma",1],
+["Cristae als Einfaltungen der inneren Hüllmembran",0],
+["Lysosomen zum Abbau der gebildeten Glucose",0]],
+e:"Richtig sind Thylakoide, Stroma und die eigene ringförmige DNA. Cristae sind Einfaltungen der inneren Mitochondrienmembran, Lysosomen sind keine Bestandteile von Chloroplasten."},
+{b:0,t:"s",q:"Welche Aufgabe haben die Chlorophylle in den Thylakoidmembranen?",o:[
+["Sie absorbieren vor allem rotes und blaues Licht und werden dadurch angeregt",1],
+["Sie absorbieren vor allem grünes Licht und werden dadurch angeregt",0],
+["Sie reflektieren rotes und blaues Licht und leiten es unverändert zum Stroma weiter",0],
+["Sie binden CO₂ im Stroma und bauen daraus direkt Glucose auf, ohne Licht zu nutzen",0]],
+e:"Chlorophylle absorbieren vor allem im roten und blauen Bereich. Grünes Licht wird kaum aufgenommen und reflektiert, deshalb sehen Blätter grün aus."},
+{b:0,t:"s",q:"In welcher Struktur befinden sich die Photosysteme und die ATP-Synthase des Chloroplasten?",o:[
+["In der Membran der Thylakoide im Chloroplasten",1],
+["In der äußeren Hüllmembran des Chloroplasten",0],
+["Frei gelöst im Stroma des Chloroplasten",0],
+["In der Zellmembran der Pflanzenzelle",0]],
+e:"Photosysteme, Elektronentransportkette und ATP-Synthase sind in die Thylakoidmembran eingelagert."},
+{b:0,t:"m",q:"Welche Aussagen zur Thylakoidmembran sind richtig?",o:[
+["Sie trennt Lumen und Stroma und ermöglicht dadurch einen Protonengradienten",1],
+["Durch Faltung und Stapelung bietet sie viel Fläche für Pigmente und Proteine",1],
+["Sie ist der Ort der CO₂-Fixierung durch das Enzym RuBisCO im Thylakoidlumen",0],
+["Sie enthält die Enzyme des Calvin-Zyklus als frei gelöste Proteine in ihrem Innenraum",0],
+["Sie bildet die äußere Begrenzung des gesamten Chloroplasten gegenüber dem Cytoplasma",0]],
+e:"Die Membran trennt zwei Räume (Voraussetzung für den Protonengradienten) und vergrößert die Fläche für die Lichtreaktion. Die CO₂-Fixierung läuft dagegen im Stroma ab, die äußere Begrenzung bildet die Hülle."},
+
+{b:1,t:"s",q:"Welche Summengleichung beschreibt die Fotosynthese richtig?",o:[
+["6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂",1],
+["6 O₂ + C₆H₁₂O₆ → 6 CO₂ + 6 H₂O",0],
+["6 CO₂ + 6 O₂ → C₆H₁₂O₆ + 6 H₂O",0],
+["6 H₂O + 6 O₂ → C₆H₁₂O₆ + 6 CO₂",0]],
+e:"Aus Kohlenstoffdioxid und Wasser entstehen mit Lichtenergie Glucose und Sauerstoff. Die zweite Gleichung ist die Zellatmung, die anderen sind falsch zusammengestellt."},
+{b:1,t:"s",q:"Woher stammt der bei der Fotosynthese freigesetzte Sauerstoff?",o:[
+["Er stammt aus dem Wasser, das in der Photolyse gespalten wird",1],
+["Er stammt aus dem CO₂, das im Calvin-Zyklus gespalten wird",0],
+["Er stammt aus der Glucose, die dabei in ihre Bausteine zerfällt",0],
+["Er stammt je zur Hälfte aus dem CO₂ und aus dem Wasser",0]],
+e:"Versuche mit Wasser, das schweres Sauerstoffisotop ¹⁸O enthielt, zeigten: Der freigesetzte O₂ stammt aus dem Wasser. Der Sauerstoff des CO₂ landet in Glucose und Wasser."},
+{b:1,t:"m",q:"Welche Aussagen zur Energie bei der Fotosynthese sind richtig?",o:[
+["Die Reaktion ist endergonisch und benötigt zugeführte Lichtenergie",1],
+["Lichtenergie wird in chemische Energie der Glucose umgewandelt",1],
+["Die Reaktion ist exergonisch und setzt Wärme an die Umgebung frei",0],
+["Die Glucose enthält weniger Energie als CO₂ und Wasser zusammen",0]],
+e:"Glucose und O₂ sind energiereicher als CO₂ und H₂O. Die Differenz stammt aus der Lichtenergie, die als chemische Energie gespeichert wird."},
+{b:1,t:"m",q:"Welche Stoffe werden bei der Fotosynthese verbraucht?",o:[
+["Kohlenstoffdioxid, das aus der Luft aufgenommen wird",1],
+["Wasser, das aus dem Boden aufgenommen wird",1],
+["Sauerstoff, der aus der Luft aufgenommen wird",0],
+["Glucose, die aus dem Boden aufgenommen wird",0]],
+e:"Verbraucht werden CO₂ und Wasser. Sauerstoff und Glucose sind die Produkte der Fotosynthese."},
+{b:1,t:"s",q:"Warum zählt die Fotosynthese zu den aufbauenden Stoffwechselwegen?",o:[
+["Aus energiearmem CO₂ und Wasser wird energiereiche Glucose aufgebaut",1],
+["Aus energiereicher Glucose werden energiearmes CO₂ und Wasser gebildet",0],
+["Aus Glucose und Sauerstoff werden CO₂ und Wasser aufgebaut",0],
+["Aus CO₂ und Sauerstoff wird dabei energiereiche Glucose abgebaut",0]],
+e:"Bei der Fotosynthese entsteht aus energiearmen, anorganischen Stoffen (CO₂, H₂O) mithilfe von Lichtenergie die energiereiche organische Verbindung Glucose. Der Abbau von Glucose ist die Zellatmung."},
+
+{b:2,t:"s",q:"Wo laufen die lichtabhängigen Reaktionen ab?",o:[
+["An der Thylakoidmembran im Chloroplasten, in der die Photosysteme liegen",1],
+["Im Stroma des Chloroplasten, in dem alle Enzyme gelöst vorliegen",0],
+["An der äußeren Hüllmembran des Chloroplasten, die ihn umschließt",0],
+["In den Cristae der Mitochondrien, die in die Matrix ragen",0]],
+e:"Die lichtabhängigen Reaktionen sind an die Photosysteme gebunden und finden daher in der Thylakoidmembran statt."},
+{b:2,t:"s",q:"Was passiert bei der Photolyse des Wassers?",o:[
+["Wasser wird am Photosystem II in Elektronen, Protonen und Sauerstoff gespalten",1],
+["Wasser wird am Photosystem I in Elektronen, Protonen und Sauerstoff gespalten",0],
+["CO₂ wird am Photosystem II in Kohlenstoff und Sauerstoff gespalten, der freigesetzt wird",0],
+["Glucose wird am Photosystem I in Elektronen und Protonen gespalten, die abgegeben werden",0]],
+e:"Am Photosystem II ersetzt die Photolyse des Wassers die Elektronen, die das Reaktionszentrum abgegeben hat. Dabei entstehen Protonen (ins Lumen) und O₂."},
+{b:2,t:"m",q:"Welche Stoffe entstehen in den lichtabhängigen Reaktionen?",o:[
+["ATP als Energieüberträger",1],
+["NADPH + H⁺ als Reduktionsmittel",1],
+["Sauerstoff als Nebenprodukt der Photolyse",1],
+["Glucose als Endprodukt der Reaktionen",0],
+["Kohlenstoffdioxid aus der Spaltung von Wasser",0]],
+e:"Die Lichtreaktion liefert ATP, NADPH + H⁺ und O₂. Glucose wird erst im Calvin-Zyklus (lichtunabhängig) aufgebaut, CO₂ wird dort verbraucht und nicht gebildet."},
+{b:2,t:"s",q:"Wie wird in den lichtabhängigen Reaktionen ATP gebildet?",o:[
+["Protonen strömen vom Lumen durch die ATP-Synthase ins Stroma und treiben die ATP-Bildung an",1],
+["Protonen strömen vom Stroma durch die ATP-Synthase ins Lumen und treiben die ATP-Bildung an",0],
+["Elektronen strömen vom Lumen durch die ATP-Synthase ins Stroma und treiben die ATP-Bildung an",0],
+["ATP entsteht im Lumen durch Substratkettenphosphorylierung aus Glucose und Phosphat",0]],
+e:"Im Lumen sammeln sich Protonen (Photolyse und Protonenpumpe). Ihr Rückfluss ins Stroma durch die ATP-Synthase liefert die Energie für ADP + Pi → ATP (Chemiosmose)."},
+{b:2,t:"s",q:"Welcher Stoff nimmt am Ende der Elektronentransportkette im Chloroplasten die Elektronen auf?",o:[
+["NADP⁺, das Elektronen und Protonen aufnimmt und zu NADPH + H⁺ wird",1],
+["NAD⁺, das Elektronen und Protonen aufnimmt und zu NADH + H⁺ wird",0],
+["O₂, das Elektronen und Protonen aufnimmt und zu Wasser wird",0],
+["CO₂, das Elektronen und Protonen aufnimmt und zu Glucose wird",0]],
+e:"Im Chloroplasten ist NADP⁺ der Elektronenakzeptor. Die Zellatmung verwendet dagegen NAD⁺ und am Ende der Kette O₂."},
+{b:2,t:"m",q:"Welche Aussagen zu den Photosystemen sind richtig?",o:[
+["Sie enthalten Antennenpigmente, die Lichtenergie zum Reaktionszentrum leiten",1],
+["Im Reaktionszentrum wird ein angeregtes Elektron abgegeben",1],
+["Photosystem I übernimmt die Spaltung des Wassers und setzt dabei Sauerstoff frei",0],
+["Photosysteme liegen frei gelöst im Stroma und sind nicht an Membranen gebunden",0],
+["Sie nehmen CO₂ aus dem Stroma auf und geben dafür Glucose ab",0]],
+e:"Antennenpigmente sammeln Licht und leiten die Energie weiter; im Reaktionszentrum wird ein Elektron angeregt und abgegeben. Die Wasserspaltung gehört zum Photosystem II, die Photosysteme sind in die Membran eingelagert."},
+{b:2,t:"s",q:"Wie heißt die lichtgetriebene ATP-Bildung an der Thylakoidmembran?",o:[
+["Fotophosphorylierung",1],["Substratkettenphosphorylierung",0],["Oxidative Phosphorylierung",0],["Carboxylierung",0]],
+e:"Fotophosphorylierung: ATP-Bildung mithilfe von Lichtenergie. Die oxidative Phosphorylierung gehört zur Atmungskette, die Carboxylierung ist die Anlagerung von CO₂ im Calvin-Zyklus."},
+{b:2,t:"s",q:"Was bewirkt die Elektronentransportkette in der Thylakoidmembran?",o:[
+["Die Energie der Elektronen wird genutzt, um Protonen ins Thylakoidlumen zu pumpen",1],
+["Die Energie der Elektronen wird genutzt, um CO₂ im Stroma zu fixieren",0],
+["Die Energie der Elektronen wird genutzt, um Glucose im Lumen abzubauen",0],
+["Die Energie der Elektronen wird genutzt, um Wasser in das Stroma zu pumpen",0]],
+e:"Die Elektronen geben beim Weg entlang der Transportkette Energie ab. Diese wird genutzt, um Protonen aus dem Stroma ins Lumen zu pumpen, so entsteht der Protonengradient für die ATP-Bildung."},
+
+{b:3,t:"s",q:"Wo läuft der Calvin-Zyklus (lichtunabhängige Reaktionen) ab?",o:[
+["Im Stroma des Chloroplasten",1],
+["An der Thylakoidmembran im Chloroplasten",0],
+["Im Thylakoidlumen des Chloroplasten",0],
+["In der Matrix der Mitochondrien",0]],
+e:"Die Enzyme des Calvin-Zyklus liegen gelöst im Stroma, wo auch ATP und NADPH aus den Thylakoiden verbraucht werden."},
+{b:3,t:"s",q:"Warum läuft der Calvin-Zyklus ohne Licht nicht dauerhaft weiter, obwohl er „lichtunabhängig“ heißt?",o:[
+["Weil ATP und NADPH aus den lichtabhängigen Reaktionen nicht mehr nachgeliefert werden",1],
+["Weil Chlorophyll im Dunkeln das Enzym RuBisCO im Stroma direkt hemmt und den Zyklus stoppt",0],
+["Weil die Photosysteme im Dunkeln das fixierte CO₂ wieder abgeben und es freisetzen",0],
+["Weil die gebildete Glucose im Dunkeln sofort wieder vollständig zu CO₂ abgebaut wird",0]],
+e:"Der Calvin-Zyklus braucht Licht nicht direkt, aber ATP und NADPH aus der Lichtreaktion. Fehlen sie, kommt der Zyklus nach kurzer Zeit zum Erliegen."},
+{b:3,t:"s",q:"Welcher Stoff nimmt im Calvin-Zyklus das CO₂ auf?",o:[
+["Ribulose-1,5-bisphosphat, ein Molekül mit fünf C-Atomen",1],
+["3-Phosphoglycerat, ein Molekül mit drei C-Atomen",0],
+["Glycerinaldehyd-3-phosphat, ein Molekül mit drei C-Atomen",0],
+["Glucose, ein Molekül mit sechs C-Atomen",0]],
+e:"Das Enzym RuBisCO bindet CO₂ an den C₅-Akzeptor Ribulose-1,5-bisphosphat (RuBP)."},
+{b:3,t:"s",q:"Nach der CO₂-Fixierung durch RuBisCO zerfällt das entstandene instabile C₆-Zwischenprodukt sofort. Welche Stoffe entstehen?",o:[
+["Zwei Moleküle 3-Phosphoglycerat mit je drei C-Atomen",1],
+["Ein Molekül Glucose mit sechs C-Atomen und zwei Phosphatgruppen",0],
+["Zwei Moleküle Pyruvat mit je drei C-Atomen",0],
+["Ein Molekül Ribulose-1,5-bisphosphat und ein Molekül CO₂",0]],
+e:"RuBP (C₅) + CO₂ (C₁) ergibt kurzzeitig ein C₆-Molekül, das in zwei Moleküle 3-Phosphoglycerat (C₃) zerfällt. Glucose entsteht erst viel später."},
+{b:3,t:"m",q:"Wozu werden ATP und NADPH im Calvin-Zyklus gebraucht?",o:[
+["ATP liefert die Energie für den Aufbau des Zuckers aus CO₂",1],
+["NADPH liefert den Wasserstoff für die Reduktion der Zwischenprodukte",1],
+["ATP spaltet im Stroma Wasser in Wasserstoff und Sauerstoff",0],
+["NADPH bindet CO₂ direkt an das Enzym RuBisCO im Stroma",0]],
+e:"Beide Stoffe stammen aus der Lichtreaktion: ATP liefert Energie, NADPH den Wasserstoff, mit dem die Zwischenprodukte zu Zucker reduziert werden. Wasser wird in der Lichtreaktion gespalten, CO₂ wird von RuBisCO gebunden."},
+{b:3,t:"s",q:"Wie viele CO₂-Moleküle müssen fixiert werden, damit ein C₆-Körper (ein Glucosemolekül) aufgebaut werden kann?",o:[
+["Sechs CO₂-Moleküle, also sechs Umläufe des Calvin-Zyklus",1],
+["Ein CO₂-Molekül, das im Calvin-Zyklus sechsmal umgesetzt wird",0],
+["Drei CO₂-Moleküle, also drei Umläufe des Calvin-Zyklus",0],
+["Zwölf CO₂-Moleküle, also zwölf Umläufe des Calvin-Zyklus",0]],
+e:"Jedes C-Atom der Glucose stammt aus einem CO₂-Molekül. Pro Umlauf wird ein CO₂ fixiert, also sind für C₆H₁₂O₆ sechs Umläufe nötig."},
+{b:3,t:"s",q:"Wie entsteht aus dem Triosephosphat (Glycerinaldehyd-3-phosphat) der C₆-Körper?",o:[
+["Zwei C₃-Moleküle werden zu einem C₆-Körper verknüpft",1],
+["Drei C₂-Moleküle werden zu einem C₆-Körper verknüpft",0],
+["Sechs C₁-Moleküle werden direkt zu einem C₆-Körper verknüpft",0],
+["Ein C₅-Molekül und ein C₁-Molekül werden zu einem C₆-Körper verknüpft",0]],
+e:"Zwei Moleküle Glycerinaldehyd-3-phosphat (je C₃) werden zu einer Hexose (C₆, Glucose bzw. Fructose-Phosphat) verknüpft. Das ist der Aufbau des C₆-Körpers."},
+{b:3,t:"m",q:"Was geschieht bei der Regeneration im Calvin-Zyklus?",o:[
+["Aus Zwischenprodukten wird wieder der CO₂-Akzeptor RuBP gebildet",1],
+["Der Calvin-Zyklus kann dadurch immer wieder neu ablaufen",1],
+["Dabei wird Sauerstoff aus dem Wasser freigesetzt",0],
+["Dabei werden die Photosysteme in der Membran erneuert",0]],
+e:"Der größte Teil der gebildeten Zwischenprodukte wird genutzt, um den CO₂-Akzeptor RuBP wieder herzustellen. Nur so kann der Zyklus weiterlaufen; ein kleiner Teil wird zu Zucker (C₆-Körper) aufgebaut."}
+];
+
+var picks=[],order=[],done=false;
+function rnd(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+function build(){
+  var h="",last=-1;
+  Q.forEach(function(q,i){
+    if(q.b!==last){h+='<div class="blk">'+esc(BLOCKS[q.b])+'</div>';last=q.b;}
+    var idx=rnd(q.o.map(function(_,k){return k;}));order[i]=idx;
+    h+='<div class="card" id="c'+i+'"><p class="q">'+(i+1)+'. '+esc(q.q)+
+      '<span class="tag'+(q.t==="s"?" s":"")+'">'+(q.t==="s"?"Einfachauswahl":"Mehrfachauswahl")+'</span></p>';
+    idx.forEach(function(k){
+      h+='<label class="o"><input type="'+(q.t==="s"?"radio":"checkbox")+'" name="q'+i+'" value="'+k+'"><span>'+esc(q.o[k][0])+'</span></label>';
+    });
+    h+='<div class="ex"></div></div>';
+  });
+  document.getElementById("qs").innerHTML=h;
+}
+function selected(i){
+  var r=[];document.querySelectorAll('input[name="q'+i+'"]').forEach(function(x){if(x.checked)r.push(+x.value);});return r;
+}
+function updOpen(){
+  var n=0;Q.forEach(function(_,i){if(selected(i).length)n++;});
+  document.getElementById("open").textContent=n+" von "+Q.length+" Fragen beantwortet";
+}
+document.getElementById("go").onclick=function(){
+  if(!document.getElementById("klasse").value.trim()){document.getElementById("kerr").classList.remove("hide");return;}
+  document.getElementById("start").classList.add("hide");
+  document.getElementById("test").classList.remove("hide");
+  build();updOpen();window.scrollTo(0,0);
+};
+document.getElementById("qs").addEventListener("change",updOpen);
+
+document.getElementById("fin").onclick=function(){
+  if(done)return;
+  var n=0;Q.forEach(function(_,i){if(selected(i).length)n++;});
+  if(n<Q.length&&!confirm((Q.length-n)+" Frage(n) sind noch unbeantwortet und zählen als falsch. Trotzdem auswerten?"))return;
+  done=true;
+  var pts=0,bl=BLOCKS.map(function(){return[0,0];}),fr=[];
+  Q.forEach(function(q,i){
+    var sel=selected(i),ok=true;
+    q.o.forEach(function(o,k){var s=sel.indexOf(k)>-1;if(s!==!!o[1])ok=false;});
+    if(!sel.length)ok=false;
+    pts+=ok?1:0;bl[q.b][1]++;if(ok)bl[q.b][0]++;fr.push(ok?1:0);
+    var c=document.getElementById("c"+i);c.classList.add("show");
+    c.querySelectorAll("label.o").forEach(function(l){
+      var inp=l.querySelector("input"),k=+inp.value,s=inp.checked;inp.disabled=true;
+      if(q.o[k][1]&&s)l.classList.add("ok");else if(q.o[k][1])l.classList.add("miss");else if(s)l.classList.add("bad");
+    });
+    var ex=c.querySelector(".ex");ex.className="ex"+(ok?"":" w");
+    ex.innerHTML="<b>"+(ok?"Richtig.":"Nicht ganz.")+"</b> "+esc(q.e);
+  });
+  document.getElementById("fin").disabled=true;
+  var pct=Math.round(pts/Q.length*100);
+  document.getElementById("tot").textContent=pts+" von "+Q.length+" Punkten ("+pct+" %)";
+  document.getElementById("blocks").innerHTML=bl.map(function(b,i){
+    var p=b[0]/b[1]*100,col=p>75?"#2e7d32":p>=50?"#f9a825":"#c62828";
+    return '<div class="row"><div><span class="n">'+esc(BLOCKS[i])+'</span><div class="bar"><i style="width:'+p+'%;background:'+col+'"></i></div></div><b>'+b[0]+' / '+b[1]+'</b></div>';
+  }).join("");
+  document.getElementById("res").classList.remove("hide");
+  var payload={test:TESTNAME,klasse:document.getElementById("klasse").value.trim(),punkte:pts,maxPunkte:Q.length,prozent:pct,
+    themenbloecke:bl.map(function(b,i){return BLOCKS[i]+": "+b[0]+"/"+b[1];}).join("; "),fragen:fr.join(",")};
+  var st=document.getElementById("sent");
+  try{
+    fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+    .then(function(){st.textContent="Dein Ergebnis wurde anonym an deine Lehrkraft übermittelt (nur Klasse, Punkte, Themen – kein Name).";})
+    .catch(function(){st.textContent="Das Ergebnis konnte nicht übermittelt werden (keine Verbindung).";});
+  }catch(e){st.textContent="Das Ergebnis konnte nicht übermittelt werden.";}
+  document.getElementById("res").scrollIntoView({behavior:"smooth"});
+};
+</script>
+</body>
+</html>
